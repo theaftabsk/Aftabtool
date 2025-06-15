@@ -1,0 +1,119 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AFTAB MOD & TOOLS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <style>
+    /* [Same CSS as before — omitted for brevity] */
+  </style>
+</head>
+<body>
+  <header>
+    <h1>☠️ AFTAB HACKER ZONE ☠️</h1>
+    <div class="tagline">Unleashing Digital Power — Free Mod APKs & Ethical Tools</div>
+    <button class="toggle-mode" onclick="toggleMode()">Toggle Theme</button>
+  </header>
+  <nav>
+    <button onclick="filterCategory('all')">All</button>
+    <button onclick="filterCategory('mod')">Mod APK</button>
+    <button onclick="filterCategory('tool')">Tool</button>
+    <button onclick="filterCategory('premium')">Premium</button>
+    <button onclick="showAbout()">About</button>
+  </nav>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="🔍 Search Tools or Mod APKs...">
+  </div>
+  <div style="text-align:center">
+    <a href="https://t.me/yourtelegram" class="telegram-btn" target="_blank">Join Telegram Group</a>
+    <div id="visitorCount"></div>
+  </div>
+  <div class="section" id="contentArea"></div>
+  <footer>
+    &copy; 2025 AFTAB HACKER. All rights reserved.
+  </footer>
+  <script>
+    async function loadTools() {
+      const res = await fetch("https://raw.githubusercontent.com/aftabsk0005/Aftabtool/main/tools.json");
+      const tools = await res.json();
+      const content = document.getElementById("contentArea");
+      content.innerHTML = "";
+      tools.reverse().forEach(tool => {
+        content.innerHTML += `
+          <div class="card" data-type="${tool.type}">
+            <h3>${tool.name}</h3>
+            <small>Upload Date: ${tool.date}</small>
+            <small>Downloads: <span class="downloads">${tool.downloads}</span></small>
+            <small>Rating: ⭐⭐⭐⭐☆ (${tool.rating})</small>
+            <p>${tool.desc}</p>
+            <a href="${tool.link}" target="_blank" class="download-link">⬇️ Download</a>
+            <button onclick="likeTool(this)">👍 Like (<span class="likes">${tool.likes}</span>)</button>
+            <div class="feedback">
+              <textarea placeholder="Leave a comment..."></textarea>
+              <button>Submit</button>
+            </div>
+          </div>`;
+      });
+    }function toggleMode() {
+  const body = document.body;
+  const mode = body.getAttribute("data-mode") || "dark";
+  if (mode === "dark") {
+    body.style.background = "#fff";
+    body.style.color = "#000";
+    body.setAttribute("data-mode", "light");
+    document.cookie = "theme=light";
+  } else {
+    body.style.background = "#000";
+    body.style.color = "#00ffe1";
+    body.setAttribute("data-mode", "dark");
+    document.cookie = "theme=dark";
+  }
+}
+
+function filterCategory(type) {
+  document.querySelectorAll('.card').forEach(card => {
+    card.style.display = (type === 'all' || card.dataset.type === type) ? 'block' : 'none';
+  });
+}
+
+document.getElementById('searchInput').addEventListener('input', function () {
+  const value = this.value.toLowerCase();
+  document.querySelectorAll('.card').forEach(card => {
+    card.style.display = card.textContent.toLowerCase().includes(value) ? 'block' : 'none';
+  });
+});
+
+function showAbout() {
+  document.getElementById('contentArea').innerHTML = `
+    <div class="card">
+      <h3>About Aftab</h3>
+      <img src="https://via.placeholder.com/150" alt="Aftab's photo" style="border-radius: 10px;">
+      <p>I’m <strong>Aftab</strong>, a 20-year-old ethical hacker & modder from Plassey, India. I build tools for learning, testing, and ethical hacking. I also develop and share useful mod APKs for educational purposes only.</p>
+    </div>`;
+}
+
+function likeTool(btn) {
+  const likesSpan = btn.querySelector(".likes");
+  let likes = parseInt(likesSpan.textContent);
+  if (!isNaN(likes)) {
+    likesSpan.textContent = likes + 1;
+  }
+}
+
+window.onload = function() {
+  if (document.cookie.includes("theme=light")) {
+    document.body.setAttribute("data-mode", "light");
+    document.body.style.background = "#fff";
+    document.body.style.color = "#000";
+  }
+  let visits = localStorage.getItem("aftab_site_visits") || 0;
+  visits++;
+  localStorage.setItem("aftab_site_visits", visits);
+  document.getElementById("visitorCount").textContent = `👀 Total Visits: ${visits}`;
+
+  loadTools(); // load tools on page load
+}
+
+  </script>
+</body>
+      </html>
