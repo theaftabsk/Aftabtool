@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Aftab Admin Panel</title>
+  <meta charset="UTF-8" />
+  <title>Admin Login - Aftab</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #111;
-      color: #00ffe1;
-      padding: 20px;
-    }
-    input, textarea, select, button {
-      display: block;
-      margin: 10px 0;
-      padding: 10px;
-      width: 100%;
       background: #000;
       color: #00ffe1;
-      border: 1px solid #00ffe1;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      padding: 40px;
+    }
+    input, button {
+      margin: 10px;
+      padding: 10px;
+      width: 80%;
+      max-width: 300px;
       border-radius: 5px;
+      border: 1px solid #00ffe1;
+      background: #111;
+      color: #00ffe1;
     }
     button {
       background-color: #00ffe1;
@@ -26,38 +27,59 @@
       font-weight: bold;
       cursor: pointer;
     }
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
+    #adminPanel {
+      display: none;
+      margin-top: 30px;
     }
-    #status {
-      margin-top: 20px;
-      color: lime;
+    textarea, select {
+      width: 100%;
     }
   </style>
 </head>
 <body>
-  <h2>🛠️ AFTAB Admin Panel (GitHub JSON Based)</h2>
+  <h2>🔐 Admin Login</h2>
+  <div id="loginBox">
+    <input type="text" id="username" placeholder="Username" />
+    <input type="password" id="password" placeholder="Password" />
+    <button onclick="checkLogin()">Login</button>
+    <div id="loginError" style="color:red;"></div>
+  </div>
 
-  <input type="text" id="toolName" placeholder="Tool Name">
-  <select id="toolType">
-    <option value="mod">Mod APK</option>
-    <option value="tool">Tool</option>
-    <option value="premium">Premium</option>
-  </select>
-  <input type="text" id="toolLink" placeholder="Download Link">
-  <textarea id="toolDesc" placeholder="Description"></textarea>
-  <input type="date" id="toolDate">
-  <input type="number" step="0.1" id="toolRating" placeholder="Rating (e.g., 4.5)">
-  <button onclick="submitTool()">➕ Add Tool</button>
-
-  <div id="status"></div>
+  <div id="adminPanel">
+    <h2>🛠️ AFTAB Admin Panel</h2>
+    <input type="text" id="toolName" placeholder="Tool Name" />
+    <select id="toolType">
+      <option value="mod">Mod APK</option>
+      <option value="tool">Tool</option>
+      <option value="premium">Premium</option>
+    </select>
+    <input type="text" id="toolLink" placeholder="Download Link" />
+    <textarea id="toolDesc" placeholder="Description"></textarea>
+    <input type="date" id="toolDate" />
+    <input type="number" step="0.1" id="toolRating" placeholder="Rating (e.g., 4.5)" />
+    <button onclick="submitTool()">➕ Add Tool</button>
+    <div id="status" style="margin-top:15px; color:lime;"></div>
+  </div>
 
   <script>
-    const username = "aftabsk0005";
-    const repo = "Aftabtool";
-    const token = "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";
-    const filePath = "tools.json";
+    const GITHUB_USERNAME = "aftabsk0005";
+    const REPO_NAME = "Aftabtool";
+    const FILE_PATH = "tools.json";
+
+    let token = "";
+
+    function checkLogin() {
+      const user = document.getElementById("username").value;
+      const pass = document.getElementById("password").value;
+
+      if (user === "aftab" && pass === "h4ck3r") {
+        token = prompt("Enter your GitHub token securely:");
+        document.getElementById("loginBox").style.display = "none";
+        document.getElementById("adminPanel").style.display = "block";
+      } else {
+        document.getElementById("loginError").innerText = "❌ Incorrect login";
+      }
+    }
 
     async function submitTool() {
       const name = document.getElementById("toolName").value;
@@ -72,13 +94,8 @@
         return;
       }
 
-      const newTool = {
-        name, type, link, desc, date, rating,
-        downloads: 0,
-        likes: 0
-      };
-
-      const url = `https://api.github.com/repos/${username}/${repo}/contents/${filePath}`;
+      const newTool = { name, type, link, desc, date, rating, downloads: 0, likes: 0 };
+      const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${FILE_PATH}`;
       const headers = {
         "Authorization": `token ${token}`,
         "Accept": "application/vnd.github.v3+json"
@@ -87,7 +104,7 @@
       try {
         const res = await fetch(url, { headers });
         const data = await res.json();
-        const tools = JSON.parse(atob(data.content));
+        const tools = JSON.parse(atob(data.content.replace(/\\n/g, '')));
         tools.push(newTool);
 
         const update = await fetch(url, {
@@ -106,9 +123,9 @@
           document.getElementById("status").textContent = "❌ Failed to update tools.json";
         }
       } catch (err) {
-        document.getElementById("status").textContent = "❌ Error: " + err;
+        document.getElementById("status").textContent = "❌ Error: " + err.message;
       }
     }
   </script>
 </body>
-</html>
+      </html>
