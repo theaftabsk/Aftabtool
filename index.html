@@ -4,66 +4,69 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AFTAB MOD & TOOLS</title>
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet" />
   <style>
+    :root {
+      --primary: #00ffe1;
+      --bg-dark: #0f0f0f;
+      --bg-light: #f9f9f9;
+      --text-dark: #000;
+      --text-light: #fff;
+      --card-glass: rgba(0, 0, 0, 0.4);
+      --card-border: rgba(0, 255, 225, 0.6);
+    }
     body {
       margin: 0;
       font-family: 'Orbitron', sans-serif;
-      background: linear-gradient(to right, #000000, #1a1a1a);
-      color: #00ffe1;
+      background: var(--bg-dark);
+      color: var(--primary);
+      transition: background 0.3s, color 0.3s;
     }
     header {
-      background: url('https://wallpapercave.com/wp/wp9126000.jpg') no-repeat center center;
-      background-size: cover;
-      padding: 60px 20px 30px;
+      background: url('https://wallpapercave.com/wp/wp9126000.jpg') center/cover no-repeat;
+      padding: 70px 20px 40px;
       text-align: center;
       position: relative;
     }
     header::after {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.6);
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
     }
     header h1, header .tagline {
       position: relative;
       z-index: 2;
     }
     header h1 {
-      margin: 0;
       font-size: 3em;
-      color: #00ffe1;
-      text-shadow: 0 0 10px #00ffe1, 0 0 20px #000;
+      color: var(--primary);
+      text-shadow: 0 0 10px var(--primary), 0 0 20px #000;
     }
-    header .tagline {
+    .tagline {
       font-size: 1.2em;
-      color: #fff;
+      color: white;
       font-style: italic;
-      text-shadow: 0 0 6px #00ffe1;
-    }
-    .toggle-mode {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: none;
-      border: 1px solid #00ffe1;
-      color: #00ffe1;
-      padding: 5px 10px;
-      cursor: pointer;
-      z-index: 3;
+      text-shadow: 0 0 6px var(--primary);
     }
     nav {
       text-align: center;
-      margin-bottom: 10px;
+      margin-top: -20px;
+      padding-bottom: 10px;
     }
     nav button {
-      margin: 0 6px;
-      padding: 10px 15px;
-      background: #111;
-      color: #00ffe1;
-      border: 1px solid #00ffe1;
+      margin: 6px;
+      padding: 10px 20px;
+      border: none;
+      background: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
       cursor: pointer;
-      font-family: 'Orbitron';
+      transition: 0.3s;
+    }
+    nav button:hover {
+      background: var(--primary);
+      color: #000;
     }
     .search-bar {
       text-align: center;
@@ -74,83 +77,87 @@
       width: 80%;
       max-width: 500px;
       font-size: 1em;
-      border: 1px solid #00ffe1;
+      border: 1px solid var(--primary);
       background: #000;
-      color: #00ffe1;
+      color: var(--primary);
+      border-radius: 8px;
     }
     .section {
-      padding: 20px;
+      padding: 30px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
     }
     .card {
-      border: 1px solid #00ffe1;
-      margin-bottom: 20px;
-      padding: 15px;
-      background: #111;
-      border-radius: 8px;
-      box-shadow: 0 0 8px #00ffe1;
+      background: var(--card-glass);
+      border: 1px solid var(--card-border);
+      border-radius: 15px;
+      box-shadow: 0 0 15px var(--card-border);
+      padding: 20px;
+      max-width: 300px;
+      width: 100%;
+      backdrop-filter: blur(8px);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeIn 0.6s ease both;
     }
     .card:hover {
-      transform: scale(1.02);
-      box-shadow: 0 0 12px #00ffe1;
+      transform: translateY(-5px);
+      box-shadow: 0 0 25px var(--primary);
     }
     .card h3 {
       margin-top: 0;
+      color: var(--primary);
     }
     .card small {
       color: #aaa;
       display: block;
       margin-bottom: 5px;
     }
+    .card p {
+      color: #ccc;
+    }
+    .download-link {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 18px;
+      background: var(--primary);
+      color: #000;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    .download-link:hover {
+      background: #00cbbf;
+    }
     .feedback textarea {
       width: 100%;
       padding: 10px;
       background: #000;
-      color: #00ffe1;
-      border: 1px solid #00ffe1;
-      resize: vertical;
-    }
-    .feedback button {
-      margin-top: 5px;
-      padding: 6px 12px;
-      background: #00ffe1;
-      color: #000;
-      border: none;
-      cursor: pointer;
-    }
-    .likes {
-      font-weight: bold;
-    }
-    .download-link {
-      margin-top: 10px;
-      display: inline-block;
-      padding: 8px 15px;
-      background-color: #00ffe1;
-      color: #000;
-      text-decoration: none;
-      border-radius: 4px;
-      font-weight: bold;
-    }
-    footer {
-      background: #111;
-      color: #fff;
-      text-align: center;
-      padding: 10px;
-      font-size: 0.9em;
-    }
-    .telegram-btn {
-      background: #229ED9;
-      color: white;
-      padding: 10px;
-      display: inline-block;
-      margin: 10px auto;
-      text-decoration: none;
+      color: var(--primary);
+      border: 1px solid var(--primary);
       border-radius: 5px;
     }
-    #visitorCount {
-      font-size: 0.8em;
-      margin-top: 5px;
-      color: #ccc;
+    .feedback button {
+      margin-top: 6px;
+      padding: 6px 12px;
+      background: var(--primary);
+      color: #000;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #111;
+      color: #999;
+      font-size: 0.9em;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
     }
   </style>
 </head>
@@ -158,9 +165,7 @@
   <header>
     <h1>☠️ AFTAB HACKER ZONE ☠️</h1>
     <div class="tagline">Unleashing Digital Power — Free Mod APKs & Ethical Tools</div>
-    <button class="toggle-mode" onclick="toggleMode()">Toggle Theme</button>
   </header>
-
   <nav>
     <button onclick="filterCategory('all')">All</button>
     <button onclick="filterCategory('mod')">Mod APK</button>
@@ -168,58 +173,39 @@
     <button onclick="filterCategory('premium')">Premium</button>
     <button onclick="showAbout()">About</button>
   </nav>
-
   <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="🔍 Search Tools or Mod APKs...">
+    <input type="text" id="searchInput" placeholder="🔍 Search Tools or Mod APKs..." />
   </div>
-
-  <div style="text-align:center">
-    <a href="https://t.me/yourtelegram" class="telegram-btn" target="_blank">Join Telegram Group</a>
-    <div id="visitorCount"></div>
-  </div>
-
-  <div class="section" id="contentArea">
-    <div class="card" data-type="mod">
-      <h3>YouTube MOD APK</h3>
-      <small>Upload Date: 2025-06-15</small>
-      <small>Downloads: <span class="downloads">1254</span></small>
-      <small>Rating: ⭐⭐⭐⭐☆ (4.2)</small>
-      <p>Adfree, Background Play, and more...</p>
-      <a href="https://example.com/youtube_mod_download" target="_blank" class="download-link" onclick="incrementDownload(this)">⬇️ Download</a>
-      <button onclick="likeTool(this)">👍 Like (<span class="likes">0</span>)</button>
-      <div class="feedback">
-        <textarea placeholder="Leave a comment..."></textarea>
-        <button>Submit</button>
-      </div>
-    </div>
-  </div>
-
+  <div class="section" id="contentArea"></div>
   <footer>
-    &copy; 2025 AFTAB HACKER. All rights reserved.
+    &copy; 2025 AFTAB HACKER. Designed with ❤️ for ethical hacking & mod learning.
   </footer>
-
   <script>
-    function toggleMode() {
-      const body = document.body;
-      const mode = body.getAttribute("data-mode") || "dark";
-      if (mode === "dark") {
-        body.style.background = "#fff";
-        body.style.color = "#000";
-        body.setAttribute("data-mode", "light");
-        document.cookie = "theme=light";
-      } else {
-        body.style.background = "#000";
-        body.style.color = "#00ffe1";
-        body.setAttribute("data-mode", "dark");
-        document.cookie = "theme=dark";
-      }
-    }
+    async function loadTools() {
+      try {
+        const res = await fetch("https://raw.githubusercontent.com/aftabsk0005/Aftabtool/main/tools.json");
+        const tools = await res.json();
 
-    function incrementDownload(link) {
-      const span = link.parentElement.querySelector(".downloads");
-      let count = parseInt(span.textContent);
-      if (!isNaN(count)) {
-        span.textContent = count + 1;
+        const container = document.getElementById("contentArea");
+        container.innerHTML = "";
+
+        tools.reverse().forEach(tool => {
+          container.innerHTML += `
+            <div class="card" data-type="${tool.type}">
+              <h3>${tool.name}</h3>
+              <small>Upload Date: ${tool.date}</small>
+              <small>Rating: ⭐⭐⭐⭐☆ (${tool.rating})</small>
+              <p>${tool.desc}</p>
+              <a href="${tool.link}" target="_blank" class="download-link">⬇️ Download</a>
+              <div class="feedback">
+                <textarea placeholder="Leave a comment..."></textarea>
+                <button>Submit</button>
+              </div>
+            </div>
+          `;
+        });
+      } catch (err) {
+        document.getElementById("contentArea").innerHTML = "<p style='color:red;'>⚠️ Failed to load tools.json</p>";
       }
     }
 
@@ -240,32 +226,12 @@
       document.getElementById('contentArea').innerHTML = `
         <div class="card">
           <h3>About Aftab</h3>
-          <img src="https://via.placeholder.com/150" alt="Aftab's photo" style="border-radius: 10px;">
+          <img src="https://via.placeholder.com/150" alt="Aftab's photo" style="border-radius: 10px; width: 100%; max-width: 180px;" />
           <p>I’m <strong>Aftab</strong>, a 20-year-old ethical hacker & modder from Plassey, India. I build tools for learning, testing, and ethical hacking. I also develop and share useful mod APKs for educational purposes only.</p>
         </div>`;
     }
 
-    function likeTool(btn) {
-      const likesSpan = btn.querySelector(".likes");
-      let likes = parseInt(likesSpan.textContent);
-      if (!isNaN(likes)) {
-        likes++;
-        likesSpan.textContent = likes;
-      }
-    }
-
-    window.onload = function () {
-      if (document.cookie.includes("theme=light")) {
-        document.body.setAttribute("data-mode", "light");
-        document.body.style.background = "#fff";
-        document.body.style.color = "#000";
-      }
-
-      let visits = localStorage.getItem("aftab_site_visits") || 0;
-      visits++;
-      localStorage.setItem("aftab_site_visits", visits);
-      document.getElementById("visitorCount").textContent = `👀 Total Visits: ${visits}`;
-    };
+    window.onload = loadTools;
   </script>
 </body>
-    </html>
+</html>
