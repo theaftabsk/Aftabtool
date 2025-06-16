@@ -208,6 +208,21 @@
         document.getElementById("contentArea").innerHTML = "<p style='color:red;'>⚠️ Failed to load tools.json</p>";
       }
     }
+function showAbout() {
+  document.getElementById('contentArea').innerHTML = `
+    <div class="card">
+      <h3>About ASZONE</h3>
+      <img src="https://via.placeholder.com/150" alt="Aftab's photo" style="border-radius: 10px; width: 100%; max-width: 180px;" />
+      <p><strong>Hi, I'm Aftab SK</strong> — an 18-year-old ethical hacker, tool developer and modder from India.</p>
+      <p><strong>ASZONE</strong> is my personal project to share <strong>free mod APKs</strong> and <strong>ethical hacking tools</strong> for learning and educational purposes only. All tools shared here are safe, open-source or tested manually.</p>
+      <p>👉 I believe in learning through practice — so ASZONE is not just a site, it’s my open lab.</p>
+      <p>📬 Connect with me:</p>
+      <ul style="list-style: none; padding-left: 0;">
+        <li>🔹 Telegram: <a href="https://t.me/theaftabsk" target="_blank">@theaftabsk</a></li>
+        <li>🔹 Instagram: <a href="https://instagram.com/theaftabsk" target="_blank">@theaftabsk</a></li>
+      </ul>
+    </div>`;
+}
 
     function filterCategory(type) {
       document.querySelectorAll('.card').forEach(card => {
@@ -222,16 +237,4 @@
       });
     });
 
-    function showAbout() {
-      document.getElementById('contentArea').innerHTML = `
-        <div class="card">
-          <h3>About Aftab</h3>
-          <img src="https://via.placeholder.com/150" alt="Aftab's photo" style="border-radius: 10px; width: 100%; max-width: 180px;" />
-          <p>I’m <strong>Aftab</strong>, a 20-year-old ethical hacker & modder from Plassey, India. I build tools for learning, testing, and ethical hacking. I also develop and share useful mod APKs for educational purposes only.</p>
-        </div>`;
-    }
-
-    window.onload = loadTools;
-  </script>
-</body>
-</html>
+   
