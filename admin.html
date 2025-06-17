@@ -1,1 +1,131 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ASZONE Admin Panel</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #0f0f0f;
+      color: #00ffe1;
+      padding: 20px;
+    }
+    input, textarea, select, button {
+      width: 100%; padding: 8px; margin: 5px 0;
+      background: #000; border: 1px solid #00ffe1;
+      color: #00ffe1; border-radius: 5px;
+    }
+    button {
+      background: #00ffe1; color: #000; font-weight: bold;
+    }
+    .tool-item, .banner-item {
+      border: 1px solid #444; padding: 10px;
+      background: #111; margin: 10px 0;
+      border-radius: 5px;
+    }
+    #adminPanel { display: none; }
+  </style>
+</head>
+<body><div id="loginForm">
+  <h2>🔐 Admin Login</h2>
+  <input type="text" id="username" placeholder="Username">
+  <input type="password" id="password" placeholder="Password">
+  <input type="password" id="token" placeholder="GitHub Token">
+  <button onclick="login()">Login</button>
+</div><div id="adminPanel">
+  <h1>ASZONE Admin Panel</h1>
+  <h3>Total Tools: <span id="toolCount">0</span></h3>  <form id="toolForm">
+    <h3>Add New Tool</h3>
+    <input type="text" id="name" placeholder="Tool Name" required>
+    <textarea id="desc" placeholder="Description" required></textarea>
+    <select id="type">
+      <option value="mod">Mod APK</option>
+      <option value="tool">Tool</option>
+      <option value="premium">Premium</option>
+    </select>
+    <input type="url" id="link" placeholder="Download Link" required>
+    <input type="url" id="logo" placeholder="Logo URL">
+    <input type="number" id="rating" placeholder="Rating" step="0.1">
+    <input type="date" id="date">
+    <button type="submit">➕ Add Tool</button>
+  </form>  <h3>🛠️ Manage Tools</h3>
+  <div id="toolList"></div>  <h3>🖼️ Manage Banners</h3>
+  <input type="url" id="newBanner" placeholder="New Banner URL">
+  <button onclick="addBanner()">➕ Add Banner</button>
+  <div id="bannerList"></div>
+</div><script>
+const USERNAME = "Aftab";
+const PASSWORD = "hacker05";
+const GITHUB_USER = "theaftabsk";
+const REPO = "Aftabtool";
+const BRANCH = "main";
+const TOOLS_FILE = "tools.json";
+const BANNERS_FILE = "banners.json";
+let TOKEN = "", tools = [], banners = [];
 
+function login() {
+  const u = document.getElementById("username").value;
+  const p = document.getElementById("password").value;
+  TOKEN = document.getElementById("token").value.trim();
+
+  if (u === USERNAME && p === PASSWORD && TOKEN !== "") {
+    document.getElementById("loginForm").style.display = "none";
+    document.getElementById("adminPanel").style.display = "block";
+    loadData();
+  } else {
+    alert("❌ Incorrect login or missing token.");
+  }
+}
+
+async function loadData() {
+  tools = await fetchJSON(TOOLS_FILE);
+  banners = await fetchJSON(BANNERS_FILE);
+  showTools();
+  showBanners();
+}
+
+async function fetchJSON(file) {
+  const res = await fetch(`https://raw.githubusercontent.com/${GITHUB_USER}/${REPO}/${BRANCH}/${file}`);
+  return await res.json();
+}
+
+function showTools() {
+  document.getElementById("toolCount").textContent = tools.length;
+  const container = document.getElementById("toolList");
+  container.innerHTML = "";
+  tools.forEach((tool, i) => {
+    container.innerHTML += `
+      <div class="tool-item">
+        <input value="${tool.name}" onchange="editTool(${i}, 'name', this.value)">
+        <textarea onchange="editTool(${i}, 'desc', this.value)">${tool.desc}</textarea><input value="${tool.type}" onchange="editTool(${i}, 'type', this.value)">
+    <input value="${tool.link}" onchange="editTool(${i}, 'link', this.value)">
+    <input value="${tool.logo}" onchange="editTool(${i}, 'logo', this.value)">
+    <input value="${tool.rating}" onchange="editTool(${i}, 'rating', this.value)">
+    <input value="${tool.date}" onchange="editTool(${i}, 'date', this.value)">
+    <button onclick="deleteTool(${i})">❌ Delete</button>
+  </div>`;
+
+}); }
+
+function editTool(i, key, value) { tools[i][key] = value; saveFile(TOOLS_FILE, tools); }
+
+function deleteTool(i) { if (confirm("Delete this tool?")) { tools.splice(i, 1); showTools(); saveFile(TOOLS_FILE, tools); } }
+
+document.getElementById("toolForm").addEventListener("submit", e => { e.preventDefault(); tools.unshift({ name: name.value, desc: desc.value, type: type.value, link: link.value, logo: logo.value, rating: rating.value || "4.0", date: date.value || new Date().toISOString().split("T")[0] }); showTools(); saveFile(TOOLS_FILE, tools); e.target.reset(); });
+
+function showBanners() { const list = document.getElementById("bannerList"); list.innerHTML = ""; banners.forEach((url, i) => { list.innerHTML +=  <div class="banner-item"> <strong>Banner ${i + 1}</strong> <input value="${url}" onchange="editBanner(${i}, this.value)"> <button onclick="deleteBanner(${i})">❌ Delete</button> </div>; }); }
+
+function addBanner() { const url = document.getElementById("newBanner").value.trim(); if (url) { banners.push(url); showBanners(); saveFile(BANNERS_FILE, banners); document.getElementById("newBanner").value = ""; } }
+
+function editBanner(i, value) { banners[i] = value; saveFile(BANNERS_FILE, banners); }
+
+function deleteBanner(i) { if (confirm("Delete banner?")) { banners.splice(i, 1); showBanners(); saveFile(BANNERS_FILE, banners); } }
+
+async function saveFile(path, data) { const api = https://api.github.com/repos/${GITHUB_USER}/${REPO}/contents/${path}; const res = await fetch(api, { headers: { Authorization: token ${TOKEN} } }); const file = await res.json(); const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2)))); const body = { message: Update ${path}, content: content, sha: file.sha, branch: BRANCH };
+
+const saveRes = await fetch(api, { method: "PUT", headers: { Authorization: token ${TOKEN}, "Content-Type": "application/json" }, body: JSON.stringify(body) });
+
+if (saveRes.ok) { console.log(✅ ${path} updated); } else { alert(❌ Failed to update ${path}); } } </script>
+
+</body>
+</html>
