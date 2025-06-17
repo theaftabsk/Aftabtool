@@ -26,7 +26,8 @@
     #adminPanel { display: none; }
   </style>
 </head>
-<body><div id="loginForm">
+<body>
+<div id="loginForm">
   <h2>🔐 Admin Login</h2>
   <input type="text" id="username" placeholder="Username">
   <input type="password" id="password" placeholder="Password">
@@ -34,7 +35,8 @@
   <button onclick="login()">Login</button>
 </div><div id="adminPanel">
   <h1>ASZONE Admin Panel</h1>
-  <h3>Total Tools: <span id="toolCount">0</span></h3>  <form id="toolForm">
+  <h3>Total Tools: <span id="toolCount">0</span></h3>
+  <form id="toolForm">
     <h3>Add New Tool</h3>
     <input type="text" id="name" placeholder="Tool Name" required>
     <textarea id="desc" placeholder="Description" required></textarea>
@@ -125,7 +127,7 @@ async function saveFile(path, data) { const api = https://api.github.com/repos/$
 
 const saveRes = await fetch(api, { method: "PUT", headers: { Authorization: token ${TOKEN}, "Content-Type": "application/json" }, body: JSON.stringify(body) });
 
-if (saveRes.ok) { console.log(✅ ${path} updated); } else { alert(❌ Failed to update ${path}); } } </script>
+if (!saveRes.ok) alert(❌ Failed to update ${path}); } </script>
 
 </body>
       </html>
