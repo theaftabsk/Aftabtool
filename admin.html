@@ -60,23 +60,22 @@
     <div class="summary">
       <h2>📊 Website Summary</h2>
       <p>Total Tools Available: <span id="toolCount">0</span></p>
-    </div><form id="toolForm">
-  <h2>Add New Tool</h2>
-  <div class="form-group"><label>Name</label><input type="text" id="name" required></div>
-  <div class="form-group"><label>Description</label><textarea id="desc" required></textarea></div>
-  <div class="form-group"><label>Type</label><select id="type">
-    <option value="mod">Mod APK</option>
-    <option value="tool">Tool</option>
-    <option value="premium">Premium</option>
-  </select></div>
-  <div class="form-group"><label>Link</label><input type="url" id="link" required></div>
-  <div class="form-group"><label>Logo URL</label><input type="url" id="logo"></div>
-  <div class="form-group"><label>Rating</label><input type="number" step="0.1" id="rating"></div>
-  <div class="form-group"><label>Date</label><input type="date" id="date"></div>
-  <button type="submit">➕ Add Tool</button>
-</form>
-
-<h2>🖼️ Manage Banners</h2>
+    </div>
+    <form id="toolForm">
+      <h2>Add New Tool</h2>
+      <div class="form-group"><label>Name</label><input type="text" id="name" required></div>
+      <div class="form-group"><label>Description</label><textarea id="desc" required></textarea></div>
+      <div class="form-group"><label>Type</label><select id="type">
+        <option value="mod">Mod APK</option>
+        <option value="tool">Tool</option>
+        <option value="premium">Premium</option>
+      </select></div>
+      <div class="form-group"><label>Link</label><input type="url" id="link" required></div>
+      <div class="form-group"><label>Logo URL</label><input type="url" id="logo"></div>
+      <div class="form-group"><label>Rating</label><input type="number" step="0.1" id="rating"></div>
+      <div class="form-group"><label>Date</label><input type="date" id="date"></div>
+      <button type="submit">➕ Add Tool</button>
+    </form><h2>🖼️ Manage Banners</h2>
 <div class="form-group">
   <label>Add New Banner URL</label>
   <input type="url" id="newBanner" placeholder="https://example.com/banner.jpg">
@@ -129,11 +128,15 @@ function showTools() {
 
 }); }
 
-function updateTool(i, k, v) { tools[i][k] = v; } function removeTool(i) { if (confirm("Delete this tool?")) tools.splice(i, 1), showTools(), saveFile(TOOLS_PATH, tools); }
+function updateTool(i, k, v) { tools[i][k] = v; } function removeTool(i) { if (confirm("Delete this tool?")) { tools.splice(i, 1); showTools(); saveFile(TOOLS_PATH, tools); } }
 
 toolForm.onsubmit = async e => { e.preventDefault(); tools.unshift({ name: name.value, desc: desc.value, type: type.value, link: link.value, logo: logo.value, rating: rating.value || "4.0", date: date.value || new Date().toISOString().slice(0, 10) }); toolForm.reset(); showTools(); await saveFile(TOOLS_PATH, tools); };
 
-function showBanners() { bannerList.innerHTML = ''; banners.forEach((url, i) => { bannerList.innerHTML += <div class="banner-item"> <input value="${url}" onchange="editBanner(${i}, this.value)"> <button onclick="deleteBanner(${i})">❌</button></div>; }); } function editBanner(i, val) { banners[i] = val; saveFile(BANNERS_PATH, banners); } function deleteBanner(i) { if (confirm("Remove banner?")) banners.splice(i, 1), showBanners(), saveFile(BANNERS_PATH, banners); } function addBanner() { const val = newBanner.value.trim(); if (val) banners.push(val), newBanner.value = '', showBanners(), saveFile(BANNERS_PATH, banners); }
+function showBanners() { bannerList.innerHTML = ''; banners.forEach((url, i) => { bannerList.innerHTML += <div class="banner-item"> <input value="${url}" onchange="editBanner(${i}, this.value)"> <button onclick="deleteBanner(${i})">❌</button> </div>; }); }
 
-async function saveFile(path, content) { const url = https://api.github.com/repos/${GITHUB_USERNAME}/${REPO}/contents/${path}; const res = await fetch(url, { headers: { Authorization: token ${TOKEN} } }); const file = await res.json(); await fetch(url, { method: 'PUT', headers: { Authorization: token ${TOKEN}, 'Content-Type': 'application/json' }, body: JSON.stringify({ message: Update ${path}, content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))), sha: file.sha, branch: BRANCH }) }); } </script></body></html>
+function editBanner(i, val) { banners[i] = val; saveFile(BANNERS_PATH, banners); } function deleteBanner(i) { if (confirm("Remove banner?")) { banners.splice(i, 1); showBanners(); saveFile(BANNERS_PATH, banners); } } function addBanner() { const val = newBanner.value.trim(); if (val) { banners.push(val); newBanner.value = ''; showBanners(); saveFile(BANNERS_PATH, banners); } }
 
+async function saveFile(path, content) { const url = https://api.github.com/repos/${GITHUB_USERNAME}/${REPO}/contents/${path}; const res = await fetch(url, { headers: { Authorization: token ${TOKEN} } }); const file = await res.json(); await fetch(url, { method: 'PUT', headers: { Authorization: token ${TOKEN}, 'Content-Type': 'application/json' }, body: JSON.stringify({ message: Update ${path}, content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))), sha: file.sha, branch: BRANCH }) }); } </script>
+
+</body>
+</html>
