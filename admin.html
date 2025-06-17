@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ASZONE Admin Panel</title>
   <style>
     body {
@@ -24,62 +24,46 @@
       background: #111; margin: 10px 0;
       border-radius: 5px;
     }
-    .section {
-      margin-top: 20px;
-    }
-    .nav-btns button {
-      width: auto;
-      margin-right: 10px;
-    }
-    #adminPanel > div { display: none; }
+    #adminPanel { display: none; }
   </style>
 </head>
 <body>
+
 <div id="loginForm">
   <h2>🔐 Admin Login</h2>
   <input type="text" id="username" placeholder="Username">
   <input type="password" id="password" placeholder="Password">
   <input type="password" id="token" placeholder="GitHub Token">
-  <button id="loginBtn">Login</button>
+  <button onclick="login()">Login</button>
 </div>
 
 <div id="adminPanel">
   <h1>ASZONE Admin Panel</h1>
-  <div class="nav-btns">
-    <button onclick="showSection('addToolSection')">➕ Add Tool</button>
-    <button onclick="showSection('editToolSection')">🛠 Edit Tools</button>
-    <button onclick="showSection('bannerSection')">🖼 Manage Banners</button>
-  </div>
+  <h3>Total Tools: <span id="toolCount">0</span></h3>
 
-  <div class="section" id="addToolSection">
-    <form id="toolForm">
-      <h3>Add New Tool</h3>
-      <input type="text" id="name" placeholder="Tool Name" required>
-      <textarea id="desc" placeholder="Description" required></textarea>
-      <select id="type">
-        <option value="mod">Mod APK</option>
-        <option value="tool">Tool</option>
-        <option value="premium">Premium</option>
-      </select>
-      <input type="url" id="link" placeholder="Download Link" required>
-      <input type="url" id="logo" placeholder="Logo URL">
-      <input type="number" id="rating" placeholder="Rating" step="0.1">
-      <input type="date" id="date">
-      <button type="submit">➕ Add Tool</button>
-    </form>
-  </div>
+  <form id="toolForm">
+    <h3>Add New Tool</h3>
+    <input type="text" id="name" placeholder="Tool Name" required>
+    <textarea id="desc" placeholder="Description" required></textarea>
+    <select id="type">
+      <option value="mod">Mod APK</option>
+      <option value="tool">Tool</option>
+      <option value="premium">Premium</option>
+    </select>
+    <input type="url" id="link" placeholder="Download Link" required>
+    <input type="url" id="logo" placeholder="Logo URL">
+    <input type="number" id="rating" placeholder="Rating" step="0.1">
+    <input type="date" id="date">
+    <button type="submit">➕ Add Tool</button>
+  </form>
 
-  <div class="section" id="editToolSection">
-    <h3>Total Tools: <span id="toolCount">0</span></h3>
-    <div id="toolList"></div>
-  </div>
+  <h3>🛠️ Manage Tools</h3>
+  <div id="toolList"></div>
 
-  <div class="section" id="bannerSection">
-    <h3>🖼️ Manage Banners</h3>
-    <input type="url" id="newBanner" placeholder="New Banner URL">
-    <button onclick="addBanner()">➕ Add Banner</button>
-    <div id="bannerList"></div>
-  </div>
+  <h3>🖼️ Manage Banners</h3>
+  <input type="url" id="newBanner" placeholder="New Banner URL">
+  <button onclick="addBanner()">➕ Add Banner</button>
+  <div id="bannerList"></div>
 </div>
 
 <script>
@@ -92,21 +76,19 @@ const TOOLS_FILE = "tools.json";
 const BANNERS_FILE = "banners.json";
 let TOKEN = "", tools = [], banners = [];
 
-function showSection(id) {
-  document.querySelectorAll('#adminPanel > .section').forEach(sec => sec.style.display = 'none');
-  document.getElementById(id).style.display = 'block';
-}
+function login() {
+  const u = document.getElementById("username").value;
+  const p = document.getElementById("password").value;
+  TOKEN = document.getElementById("token").value.trim();
 
-document.getElementById("loginBtn").addEventListener("click", () => {
-  const u = username.value, p = password.value;
-  TOKEN = token.value.trim();
-  if (u === USERNAME && p === PASSWORD && TOKEN) {
-    loginForm.style.display = "none";
-    adminPanel.style.display = "block";
+  if (u === USERNAME && p === PASSWORD && TOKEN !== "") {
+    document.getElementById("loginForm").style.display = "none";
+    document.getElementById("adminPanel").style.display = "block";
     loadData();
-    showSection('addToolSection');
-  } else alert("❌ Incorrect login or missing token.");
-});
+  } else {
+    alert("❌ Incorrect login or missing token.");
+  }
+}
 
 async function loadData() {
   tools = await fetchJSON(TOOLS_FILE);
@@ -121,11 +103,11 @@ async function fetchJSON(file) {
 }
 
 function showTools() {
-  toolCount.textContent = tools.length;
-  const list = document.getElementById("toolList");
-  list.innerHTML = "";
+  document.getElementById("toolCount").textContent = tools.length;
+  const container = document.getElementById("toolList");
+  container.innerHTML = "";
   tools.forEach((tool, i) => {
-    list.innerHTML += `
+    container.innerHTML += `
       <div class="tool-item">
         <input value="${tool.name}" onchange="editTool(${i}, 'name', this.value)">
         <textarea onchange="editTool(${i}, 'desc', this.value)">${tool.desc}</textarea>
@@ -139,8 +121,8 @@ function showTools() {
   });
 }
 
-function editTool(i, key, val) {
-  tools[i][key] = val;
+function editTool(i, key, value) {
+  tools[i][key] = value;
   saveFile(TOOLS_FILE, tools);
 }
 
@@ -227,7 +209,11 @@ async function saveFile(path, data) {
     body: JSON.stringify(body)
   });
 
-  if (!saveRes.ok) alert(`❌ Failed to update ${path}`);
+  if (saveRes.ok) {
+    console.log(`✅ ${path} updated`);
+  } else {
+    alert(`❌ Failed to update ${path}`);
+  }
 }
 </script>
 </body>
