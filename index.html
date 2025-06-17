@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -25,24 +26,14 @@
     .slides {
       display: flex;
       height: 100%;
-      animation: slide 32s infinite;
+      transition: transform 1s ease-in-out;
     }
-    .slides img, .slides video {
+    .slides img,
+    .slides video {
       width: 100%;
       height: 250px;
       object-fit: cover;
       flex-shrink: 0;
-    }
-    @keyframes slide {
-      0% { margin-left: 0%; }
-      20% { margin-left: 0%; }
-      25% { margin-left: -100%; }
-      45% { margin-left: -100%; }
-      50% { margin-left: -200%; }
-      70% { margin-left: -200%; }
-      75% { margin-left: -300%; }
-      95% { margin-left: -300%; }
-      100% { margin-left: 0%; }
     }
     header {
       text-align: center;
@@ -209,74 +200,86 @@
         const res = await fetch("https://raw.githubusercontent.com/theaftabsk/Aftabtool/main/banners.json");
         const banners = await res.json();
         const bannerSlider = document.getElementById("bannerSlider");
-        bannerSlider.innerHTML = banners.map(url =>
-          url.endsWith('.mp4')
-            ? `<video src="${url}" autoplay loop muted></video>`
-            : `<img src="${url}" alt="Banner">`
-        ).join("");
-        bannerSlider.style.width = `${banners.length * 100}%`;
-        bannerSlider.style.display = "flex";
-        bannerSlider.style.animation = `slide ${banners.length * 8}s infinite`;
+        bannerSlider.innerHTML = "";
+        banners.forEach(url => {
+          const isVideo = url.endsWith(".mp4");
+          const element = document.createElement(isVideo ? "video" : "img");
+          element.src = url;
+          if (isVideo) {
+            element.autoplay = true;
+            element.loop = true;
+            element.muted = true;
+            element.playsInline = true;
+          }
+          bannerSlider.appendChild(element);
+        });
+        let index = 0;
+        setInterval(() => {
+          index = (index + 1) % banners.length;
+          bannerSlider.style.transform = `translateX(-${index * 100}%)`;
+        }, 5000);
       } catch (e) {
         document.getElementById("bannerSlider").innerHTML = "<p style='color:red'>⚠️ Failed to load banners</p>";
       }
-    }async function loadTools() {
-  try {
-    const res = await fetch("https://raw.githubusercontent.com/theaftabsk/Aftabtool/main/tools.json");
-    const tools = await res.json();
-    const container = document.getElementById("contentArea");
-    container.innerHTML = "";
-    tools.reverse().forEach(tool => {
-      container.innerHTML += `
-        <div class="card" data-type="${tool.type}">
-          <img src="${tool.logo || 'https://via.placeholder.com/100'}" alt="${tool.name} logo" />
-          <h3>${tool.name}</h3>
-          <small>Upload Date: ${tool.date}</small>
-          <small>Rating: ⭐⭐⭐⭐☆ (${tool.rating})</small>
-          <p>${tool.desc}</p>
-          <a href="${tool.link}" target="_blank" class="download-link">⬇️ Download</a>
-        </div>
-      `;
+    }
+
+    async function loadTools() {
+      try {
+        const res = await fetch("https://raw.githubusercontent.com/theaftabsk/Aftabtool/main/tools.json");
+        const tools = await res.json();
+        const container = document.getElementById("contentArea");
+        container.innerHTML = "";
+        tools.reverse().forEach(tool => {
+          container.innerHTML += `
+            <div class="card" data-type="${tool.type}">
+              <img src="${tool.logo || 'https://via.placeholder.com/100'}" alt="${tool.name} logo" />
+              <h3>${tool.name}</h3>
+              <small>Upload Date: ${tool.date}</small>
+              <small>Rating: ⭐⭐⭐⭐☆ (${tool.rating})</small>
+              <p>${tool.desc}</p>
+              <a href="${tool.link}" target="_blank" class="download-link">⬇️ Download</a>
+            </div>
+          `;
+        });
+      } catch (err) {
+        document.getElementById("contentArea").innerHTML = "<p style='color:red;'>⚠️ Failed to load tools.json</p>";
+      }
+    }
+
+    function showAbout() {
+      document.getElementById('contentArea').innerHTML = `
+        <div class="card">
+          <h3>About ASZONE</h3>
+          <img src="https://via.placeholder.com/150" alt="Aftab's photo" style="border-radius: 10px; width: 100%; max-width: 180px;" />
+          <p><strong>Hi, I'm Aftab SK</strong> — an 18-year-old ethical hacker, tool developer and modder from India.</p>
+          <p><strong>ASZONE</strong> is my personal project to share <strong>free mod APKs</strong> and <strong>ethical hacking tools</strong> for learning and educational purposes only. All tools shared here are safe, open-source or tested manually.</p>
+          <p>👉 I believe in learning through practice — so ASZONE is not just a site, it’s my open lab.</p>
+          <p>📬 Connect with me:</p>
+          <ul style="list-style: none; padding-left: 0;">
+            <li>🔹 Telegram: <a href="https://t.me/theaftabsk" target="_blank">@theaftabsk</a></li>
+            <li>🔹 Instagram: <a href="https://instagram.com/theaftabsk" target="_blank">@theaftabsk</a></li>
+          </ul>
+        </div>`;
+    }
+
+    function filterCategory(type) {
+      document.querySelectorAll('.card').forEach(card => {
+        card.style.display = (type === 'all' || card.dataset.type === type) ? 'block' : 'none';
+      });
+    }
+
+    document.getElementById('searchInput').addEventListener('input', function () {
+      const value = this.value.toLowerCase();
+      document.querySelectorAll('.card').forEach(card => {
+        card.style.display = card.textContent.toLowerCase().includes(value) ? 'block' : 'none';
+      });
     });
-  } catch (err) {
-    document.getElementById("contentArea").innerHTML = "<p style='color:red;'>⚠️ Failed to load tools.json</p>";
-  }
-}
 
-function showAbout() {
-  document.getElementById('contentArea').innerHTML = `
-    <div class="card">
-      <h3>About ASZONE</h3>
-      <img src="https://via.placeholder.com/150" alt="Aftab's photo" style="border-radius: 10px; width: 100%; max-width: 180px;" />
-      <p><strong>Hi, I'm Aftab SK</strong> — an 18-year-old ethical hacker, tool developer and modder from India.</p>
-      <p><strong>ASZONE</strong> is my personal project to share <strong>free mod APKs</strong> and <strong>ethical hacking tools</strong> for learning and educational purposes only. All tools shared here are safe, open-source or tested manually.</p>
-      <p>👉 I believe in learning through practice — so ASZONE is not just a site, it’s my open lab.</p>
-      <p>📬 Connect with me:</p>
-      <ul style="list-style: none; padding-left: 0;">
-        <li>🔹 Telegram: <a href="https://t.me/theaftabsk" target="_blank">@theaftabsk</a></li>
-        <li>🔹 Instagram: <a href="https://instagram.com/theaftabsk" target="_blank">@theaftabsk</a></li>
-      </ul>
-    </div>`;
-}
-
-function filterCategory(type) {
-  document.querySelectorAll('.card').forEach(card => {
-    card.style.display = (type === 'all' || card.dataset.type === type) ? 'block' : 'none';
-  });
-}
-
-document.getElementById('searchInput').addEventListener('input', function () {
-  const value = this.value.toLowerCase();
-  document.querySelectorAll('.card').forEach(card => {
-    card.style.display = card.textContent.toLowerCase().includes(value) ? 'block' : 'none';
-  });
-});
-
-window.onload = () => {
-  loadBannerSlider();
-  loadTools();
-}
-
+    window.onload = () => {
+      loadBannerSlider();
+      loadTools();
+    }
   </script>
 </body>
-    </html>
+</html>
+
