@@ -1,18 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AFTAB MOD & TOOLS</title>
+  <title>ASZONE – Mod & Hacking Hub</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet" />
   <style>
     :root {
       --primary: #00ffe1;
       --bg-dark: #0f0f0f;
-      --bg-light: #f9f9f9;
-      --text-dark: #000;
-      --text-light: #fff;
-      --card-glass: rgba(0, 0, 0, 0.4);
       --card-border: rgba(0, 255, 225, 0.6);
     }
     body {
@@ -20,39 +15,51 @@
       font-family: 'Orbitron', sans-serif;
       background: var(--bg-dark);
       color: var(--primary);
-      transition: background 0.3s, color 0.3s;
+    }
+    .slider {
+      position: relative;
+      width: 100%;
+      height: 250px;
+      overflow: hidden;
+    }
+    .slides {
+      display: flex;
+      width: 300%;
+      animation: slide 12s infinite;
+    }
+    .slides img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+    }
+    @keyframes slide {
+      0% {margin-left: 0%;}
+      33% {margin-left: -100%;}
+      66% {margin-left: -200%;}
+      100% {margin-left: 0%;}
     }
     header {
-      background: url('https://wallpapercave.com/wp/wp9126000.jpg') center/cover no-repeat;
-      padding: 70px 20px 40px;
       text-align: center;
       position: relative;
-    }
-    header::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.6);
-    }
-    header h1, header .tagline {
-      position: relative;
-      z-index: 2;
+      padding: 40px 20px 20px;
     }
     header h1 {
-      font-size: 3em;
+      font-size: 2.5em;
       color: var(--primary);
       text-shadow: 0 0 10px var(--primary), 0 0 20px #000;
     }
     .tagline {
-      font-size: 1.2em;
+      font-size: 1em;
       color: white;
       font-style: italic;
       text-shadow: 0 0 6px var(--primary);
     }
     nav {
       text-align: center;
-      margin-top: -20px;
-      padding-bottom: 10px;
+      padding: 20px;
+      background: #111;
+      border-top: 1px solid #222;
+      border-bottom: 1px solid #222;
     }
     nav button {
       margin: 6px;
@@ -62,11 +69,12 @@
       border: 1px solid var(--primary);
       color: var(--primary);
       cursor: pointer;
-      transition: 0.3s;
+      transition: all 0.3s;
     }
     nav button:hover {
       background: var(--primary);
       color: #000;
+      transform: scale(1.05);
     }
     .search-bar {
       text-align: center;
@@ -90,29 +98,30 @@
       justify-content: center;
     }
     .card {
-      background: var(--card-glass);
+      background: rgba(0, 0, 0, 0.4);
       border: 1px solid var(--card-border);
       border-radius: 15px;
       box-shadow: 0 0 15px var(--card-border);
       padding: 20px;
       max-width: 300px;
       width: 100%;
-      backdrop-filter: blur(8px);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      animation: fadeIn 0.6s ease both;
+      text-align: center;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
     }
     .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 0 25px var(--primary);
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 0 30px var(--primary);
+    }
+    .card img {
+      max-width: 100px;
+      height: auto;
+      display: block;
+      margin: 0 auto 10px;
+      filter: drop-shadow(0 0 4px var(--primary));
     }
     .card h3 {
       margin-top: 0;
       color: var(--primary);
-    }
-    .card small {
-      color: #aaa;
-      display: block;
-      margin-bottom: 5px;
     }
     .card p {
       color: #ccc;
@@ -126,27 +135,10 @@
       text-decoration: none;
       border-radius: 6px;
       font-weight: bold;
-      transition: background 0.3s;
+      transition: 0.3s;
     }
     .download-link:hover {
       background: #00cbbf;
-    }
-    .feedback textarea {
-      width: 100%;
-      padding: 10px;
-      background: #000;
-      color: var(--primary);
-      border: 1px solid var(--primary);
-      border-radius: 5px;
-    }
-    .feedback button {
-      margin-top: 6px;
-      padding: 6px 12px;
-      background: var(--primary);
-      color: #000;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
     }
     footer {
       text-align: center;
@@ -155,15 +147,44 @@
       color: #999;
       font-size: 0.9em;
     }
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(20px);}
-      to {opacity: 1; transform: translateY(0);}
+    .subscribe-btn, .contact-btn {
+      position: fixed;
+      right: 20px;
+      z-index: 1000;
+      background: var(--primary);
+      color: #000;
+      padding: 10px 15px;
+      border-radius: 30px;
+      font-weight: bold;
+      box-shadow: 0 0 10px var(--primary);
+      cursor: pointer;
+    }
+    .subscribe-btn { bottom: 90px; }
+    .contact-btn { bottom: 30px; }
+    .social-banner {
+      text-align: center;
+      background: #111;
+      padding: 10px;
+      color: #00ffe1;
+      font-size: 1em;
+    }
+    .social-banner a {
+      color: #00ffe1;
+      margin: 0 10px;
+      text-decoration: none;
     }
   </style>
 </head>
 <body>
+  <div class="slider">
+    <div class="slides">
+      <img src="https://wallpapercave.com/wp/wp6870746.jpg" alt="Banner 1">
+      <img src="https://wallpapercave.com/wp/wp6056430.jpg" alt="Banner 2">
+      <img src="https://wallpapercave.com/wp/wp8885191.jpg" alt="Banner 3">
+    </div>
+  </div>
   <header>
-    <h1>☠️ AFTAB HACKER ZONE ☠️</h1>
+    <h1>☠️ ASZONE – Mod & Hacking Hub ☠️</h1>
     <div class="tagline">Unleashing Digital Power — Free Mod APKs & Ethical Tools</div>
   </header>
   <nav>
@@ -177,38 +198,39 @@
     <input type="text" id="searchInput" placeholder="🔍 Search Tools or Mod APKs..." />
   </div>
   <div class="section" id="contentArea"></div>
+  <div class="social-banner">
+    🔗 Follow Me On:
+    <a href="https://t.me/theaftabsk" target="_blank">Telegram</a> |
+    <a href="https://instagram.com/theaftabsk" target="_blank">Instagram</a>
+  </div>
+  <div class="subscribe-btn" onclick="window.open('https://t.me/theaftabsk', '_blank')">📩 Subscribe</div>
+  <div class="contact-btn" onclick="window.open('mailto:aftabsk0005@gmail.com', '_blank')">📬 Contact</div>
   <footer>
-    &copy; 2025 AFTAB HACKER. Designed with ❤️ for ethical hacking & mod learning.
+    &copy; 2025 ASZONE. Designed by Aftab SK.
   </footer>
   <script>
     async function loadTools() {
       try {
         const res = await fetch("https://raw.githubusercontent.com/aftabsk0005/Aftabtool/main/tools.json");
         const tools = await res.json();
-
         const container = document.getElementById("contentArea");
         container.innerHTML = "";
-
         tools.reverse().forEach(tool => {
           container.innerHTML += `
             <div class="card" data-type="${tool.type}">
+              <img src="${tool.logo || 'https://via.placeholder.com/100'}" alt="${tool.name} logo" />
               <h3>${tool.name}</h3>
               <small>Upload Date: ${tool.date}</small>
               <small>Rating: ⭐⭐⭐⭐☆ (${tool.rating})</small>
               <p>${tool.desc}</p>
               <a href="${tool.link}" target="_blank" class="download-link">⬇️ Download</a>
-              <div class="feedback">
-                <textarea placeholder="Leave a comment..."></textarea>
-                <button>Submit</button>
-              </div>
             </div>
           `;
         });
       } catch (err) {
         document.getElementById("contentArea").innerHTML = "<p style='color:red;'>⚠️ Failed to load tools.json</p>";
       }
-    }
-function showAbout() {
+    }function showAbout() {
   document.getElementById('contentArea').innerHTML = `
     <div class="card">
       <h3>About ASZONE</h3>
@@ -224,22 +246,22 @@ function showAbout() {
     </div>`;
 }
 
-    function filterCategory(type) {
-      document.querySelectorAll('.card').forEach(card => {
-        card.style.display = (type === 'all' || card.dataset.type === type) ? 'block' : 'none';
-      });
-    }
+function filterCategory(type) {
+  document.querySelectorAll('.card').forEach(card => {
+    card.style.display = (type === 'all' || card.dataset.type === type) ? 'block' : 'none';
+  });
+}
 
-    document.getElementById('searchInput').addEventListener('input', function () {
-      const value = this.value.toLowerCase();
-      document.querySelectorAll('.card').forEach(card => {
-        card.style.display = card.textContent.toLowerCase().includes(value) ? 'block' : 'none';
-      });
-    });
+document.getElementById('searchInput').addEventListener('input', function () {
+  const value = this.value.toLowerCase();
+  document.querySelectorAll('.card').forEach(card => {
+    card.style.display = card.textContent.toLowerCase().includes(value) ? 'block' : 'none';
+  });
+});
 
-    // ✅ Add this to ensure tools load on page open
 window.onload = loadTools;
-</script>
+
+  </script>
 </body>
 </html>
-   
+Tikh achi code ta dakho 
