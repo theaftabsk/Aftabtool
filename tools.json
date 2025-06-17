@@ -1,5 +1,6 @@
 [
   {
+    "name": "IP LOOKUP",
     "desc": "If you can find out the IPv4 or IPv6 address of an Internet user, you can get an idea what part of the country or world they're in by using our IP Lookup tool. What to do: Enter the IP address you're curious about in the box below, then click \"Get IP Details.\"\nWhat you will get with this tool\nThe ISP and organization's name\nThe IP's host name\nThe country it's in\nThe region/state\nThe city (see below)\nThe latitude and longitude of the location (a best guess)\nThe area code for that region\nAny known services running on that IP",
     "type": "tool",
     "link": "https://www.mediafire.com/file/gt7wtfn4k93mt73/ip.py/file",
