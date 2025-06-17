@@ -22,11 +22,6 @@
       height: 250px;
       overflow: hidden;
     }
-    .slides {
-      display: flex;
-      width: 300%;
-      animation: slide 12s infinite;
-    }
     .slides img {
       width: 100%;
       height: 250px;
@@ -34,8 +29,9 @@
     }
     @keyframes slide {
       0% {margin-left: 0%;}
-      33% {margin-left: -100%;}
-      66% {margin-left: -200%;}
+      25% {margin-left: -100%;}
+      50% {margin-left: -200%;}
+      75% {margin-left: -300%;}
       100% {margin-left: 0%;}
     }
     header {
@@ -177,11 +173,7 @@
 </head>
 <body>
   <div class="slider">
-    <div class="slides">
-      <img src="https://wallpapercave.com/wp/wp6870746.jpg" alt="Banner 1">
-      <img src="https://wallpapercave.com/wp/wp6056430.jpg" alt="Banner 2">
-      <img src="https://wallpapercave.com/wp/wp8885191.jpg" alt="Banner 3">
-    </div>
+    <div class="slides" id="bannerSlider"></div>
   </div>
   <header>
     <h1>☠️ ASZONE – Mod & Hacking Hub ☠️</h1>
@@ -209,28 +201,42 @@
     &copy; 2025 ASZONE. Designed by Aftab SK.
   </footer>
   <script>
-    async function loadTools() {
+    async function loadBannerSlider() {
       try {
-        const res = await fetch("https://raw.githubusercontent.com/aftabsk0005/Aftabtool/main/tools.json");
-        const tools = await res.json();
-        const container = document.getElementById("contentArea");
-        container.innerHTML = "";
-        tools.reverse().forEach(tool => {
-          container.innerHTML += `
-            <div class="card" data-type="${tool.type}">
-              <img src="${tool.logo || 'https://via.placeholder.com/100'}" alt="${tool.name} logo" />
-              <h3>${tool.name}</h3>
-              <small>Upload Date: ${tool.date}</small>
-              <small>Rating: ⭐⭐⭐⭐☆ (${tool.rating})</small>
-              <p>${tool.desc}</p>
-              <a href="${tool.link}" target="_blank" class="download-link">⬇️ Download</a>
-            </div>
-          `;
-        });
-      } catch (err) {
-        document.getElementById("contentArea").innerHTML = "<p style='color:red;'>⚠️ Failed to load tools.json</p>";
+        const res = await fetch("https://raw.githubusercontent.com/theaftabsk/Aftabtool/main/banners.json");
+        const banners = await res.json();
+        const bannerSlider = document.getElementById("bannerSlider");
+        bannerSlider.innerHTML = banners.map(url => `<img src="${url}" alt="Banner">`).join("");
+        bannerSlider.style.width = `${banners.length * 100}%`;
+        bannerSlider.style.display = "flex";
+        bannerSlider.style.animation = `slide ${banners.length * 4}s infinite`;
+      } catch (e) {
+        document.getElementById("bannerSlider").innerHTML = "<p style='color:red'>⚠️ Failed to load banners</p>";
       }
-    }function showAbout() {
+    }async function loadTools() {
+  try {
+    const res = await fetch("https://raw.githubusercontent.com/theaftabsk/Aftabtool/main/tools.json");
+    const tools = await res.json();
+    const container = document.getElementById("contentArea");
+    container.innerHTML = "";
+    tools.reverse().forEach(tool => {
+      container.innerHTML += `
+        <div class="card" data-type="${tool.type}">
+          <img src="${tool.logo || 'https://via.placeholder.com/100'}" alt="${tool.name} logo" />
+          <h3>${tool.name}</h3>
+          <small>Upload Date: ${tool.date}</small>
+          <small>Rating: ⭐⭐⭐⭐☆ (${tool.rating})</small>
+          <p>${tool.desc}</p>
+          <a href="${tool.link}" target="_blank" class="download-link">⬇️ Download</a>
+        </div>
+      `;
+    });
+  } catch (err) {
+    document.getElementById("contentArea").innerHTML = "<p style='color:red;'>⚠️ Failed to load tools.json</p>";
+  }
+}
+
+function showAbout() {
   document.getElementById('contentArea').innerHTML = `
     <div class="card">
       <h3>About ASZONE</h3>
@@ -259,9 +265,11 @@ document.getElementById('searchInput').addEventListener('input', function () {
   });
 });
 
-window.onload = loadTools;
+window.onload = () => {
+  loadBannerSlider();
+  loadTools();
+}
 
   </script>
 </body>
 </html>
-
