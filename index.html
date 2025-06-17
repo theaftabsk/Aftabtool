@@ -252,7 +252,6 @@ async function loadTools() {
     document.getElementById("contentArea").innerHTML = "<p style='color:red;'>⚠️ Failed to load tools.json</p>";
   }
 }
-
 function filterCategory(type) {
   document.querySelectorAll(".card").forEach(card => {
     card.style.display = (type === "all" || card.dataset.type === type) ? "block" : "none";
@@ -264,8 +263,29 @@ function showAbout() {
     <div class="card">
       <h3>About ASZONE</h3>
       <img src="https://i.ibb.co/m51TX4xv/Screenshot-20250617-105829-1-1.jpg" style="max-width: 180px; border-radius: 10px;" />
-      <p><strong>Hi, I'm Aftab SK</strong> — ethical hacker & modder from India.</p>
-      <p>This is my open-source tool & mod sharing platform.</p>
+      <p><strong>Hi, I'm Aftab SK</strong> — an ethical hacker and modder from India (Plassey).</p>
+
+      <p><strong>🔹 ASZONE</strong> is a public platform built by me to share:</p>
+      <ul style="padding-left: 18px;">
+        <li>✔️ Ethical hacking tools (for learning/testing only)</li>
+        <li>✔️ Modded Android APKs (for educational use)</li>
+        <li>✔️ Developer utilities and open-source projects</li>
+      </ul>
+
+      <p><strong>📜 Rules:</strong></p>
+      <ul style="padding-left: 18px;">
+        <li>🔸 All tools are for <strong>educational and ethical use only</strong></li>
+        <li>🔸 Do not use them to harm any individual, website, or app</li>
+        <li>🔸 We don’t host any illegal content or paid bypass</li>
+      </ul>
+
+      <p><strong>🧠 Learn | Test | Explore — But Stay Ethical</strong></p>
+
+      <p>📬 Contact:</p>
+      <ul style="list-style: none; padding-left: 0;">
+        <li>🔹 Telegram: <a href="https://t.me/theaftabsk" target="_blank">@theaftabsk</a></li>
+        <li>🔹 Instagram: <a href="https://instagram.com/theaftabsk" target="_blank">@theaftabsk</a></li>
+      </ul>
     </div>`;
 }
 
@@ -280,6 +300,10 @@ window.onload = () => {
   loadBannerSlider();
   loadTools();
 };
+
+
+
+      
 </script>
 </body>
 </html>
