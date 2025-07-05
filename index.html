@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -55,7 +54,6 @@
       background-color: var(--primary);
     }
 
-    /* rest of your CSS remains unchanged from here */
     header {
       text-align: center;
       padding: 40px 20px 20px;
@@ -169,7 +167,7 @@
   <button onclick="filterCategory('mod')">Mod APK</button>
   <button onclick="filterCategory('tool')">Tool</button>
   <button onclick="filterCategory('premium')">Premium</button>
-  <button onclick="showAbout()">About</button>
+  <a href="about.html"><button>About</button></a>
 </nav>
 
 <div class="search-bar">
@@ -252,20 +250,11 @@ async function loadTools() {
     document.getElementById("contentArea").innerHTML = "<p style='color:red;'>⚠️ Failed to load tools.json</p>";
   }
 }
+
 function filterCategory(type) {
   document.querySelectorAll(".card").forEach(card => {
     card.style.display = (type === "all" || card.dataset.type === type) ? "block" : "none";
   });
-}
-<a href="about.html"><button>About</button></a>
-
-
-      <p>📬 Contact:</p>
-      <ul style="list-style: none; padding-left: 0;">
-        <li>🔹 Telegram: <a href="https://t.me/theaftabsk" target="_blank">@theaftabsk</a></li>
-        <li>🔹 Instagram: <a href="https://instagram.com/theaftabsk" target="_blank">@theaftabsk</a></li>
-      </ul>
-    </div>`;
 }
 
 document.getElementById("searchInput").addEventListener("input", function () {
@@ -279,10 +268,7 @@ window.onload = () => {
   loadBannerSlider();
   loadTools();
 };
-
-
-
-      
 </script>
+
 </body>
 </html>
