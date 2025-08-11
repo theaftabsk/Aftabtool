@@ -4,149 +4,399 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>ASZONE – Mod & Hacking Hub</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Roboto:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
     :root {
       --primary: #00ffe1;
+      --secondary: #ff00aa;
       --bg-dark: #0f0f0f;
+      --bg-darker: #080808;
       --card-border: rgba(0, 255, 225, 0.6);
+      --text-light: #e0e0e0;
     }
+    
+    * {
+      box-sizing: border-box;
+    }
+    
     body {
       margin: 0;
-      font-family: 'Orbitron', sans-serif;
+      font-family: 'Roboto', sans-serif;
       background: var(--bg-dark);
-      color: var(--primary);
+      color: var(--text-light);
+      line-height: 1.6;
     }
+    
+    h1, h2, h3, h4, nav button {
+      font-family: 'Orbitron', sans-serif;
+    }
+    
+    /* Loading Animation */
+    .loader {
+      display: none;
+      border: 4px solid rgba(0, 255, 225, 0.2);
+      border-top: 4px solid var(--primary);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Slider Improvements */
     .slider {
       position: relative;
       width: 100%;
       overflow: hidden;
       background: #000;
+      height: 400px;
     }
+    
     .slides {
       display: flex;
       transition: transform 0.6s ease;
+      height: 100%;
     }
+    
     .slides img, .slides video {
       width: 100%;
-      height: auto;
-      aspect-ratio: 16/9;
-      object-fit: contain;
-      background: #000;
+      height: 100%;
+      object-fit: cover;
       flex-shrink: 0;
     }
+    
     .dots {
       text-align: center;
       position: absolute;
-      bottom: 10px;
+      bottom: 20px;
       width: 100%;
+      z-index: 2;
     }
+    
     .dot {
-      height: 8px;
-      width: 8px;
-      margin: 0 4px;
-      background-color: #ccc;
+      height: 12px;
+      width: 12px;
+      margin: 0 6px;
+      background-color: rgba(255,255,255,0.5);
       border-radius: 50%;
       display: inline-block;
-      transition: background-color 0.3s;
+      transition: all 0.3s;
+      cursor: pointer;
     }
+    
     .dot.active {
       background-color: var(--primary);
+      transform: scale(1.2);
     }
-
+    
+    /* Header Improvements */
     header {
       text-align: center;
       padding: 40px 20px 20px;
+      background: linear-gradient(to bottom, var(--bg-darker), var(--bg-dark));
     }
+    
     header h1 {
-      font-size: 2.5em;
+      font-size: 2.8em;
       color: var(--primary);
-      text-shadow: 0 0 10px var(--primary), 0 0 20px #000;
+      text-shadow: 0 0 10px var(--primary), 0 0 20px rgba(0, 255, 225, 0.3);
+      margin-bottom: 10px;
+      letter-spacing: 1px;
     }
+    
     .tagline {
-      font-size: 1em;
-      color: white;
-      font-style: italic;
+      font-size: 1.1em;
+      color: var(--text-light);
       text-shadow: 0 0 6px var(--primary);
+      max-width: 800px;
+      margin: 0 auto;
     }
+    
+    /* Navigation Improvements */
     nav {
       text-align: center;
-      padding: 20px;
-      background: #111;
+      padding: 15px;
+      background: var(--bg-darker);
       border-top: 1px solid #222;
       border-bottom: 1px solid #222;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
+    
     nav button {
-      margin: 6px;
+      margin: 5px;
       padding: 10px 20px;
-      border: 1px solid var(--primary);
+      border: 2px solid var(--primary);
       background: transparent;
       color: var(--primary);
       cursor: pointer;
+      font-weight: bold;
+      letter-spacing: 1px;
+      transition: all 0.3s;
+      border-radius: 30px;
     }
-    nav button:hover {
+    
+    nav button:hover, nav button.active {
       background: var(--primary);
       color: #000;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 255, 225, 0.3);
     }
+    
+    /* Search Bar Improvements */
     .search-bar {
       text-align: center;
-      margin: 20px;
+      margin: 30px auto;
+      max-width: 800px;
+      padding: 0 20px;
+      position: relative;
     }
+    
     .search-bar input {
-      padding: 12px;
-      width: 80%;
-      max-width: 500px;
-      border: 1px solid var(--primary);
-      background: #000;
+      padding: 14px 20px 14px 45px;
+      width: 100%;
+      border: 2px solid var(--primary);
+      background: rgba(0,0,0,0.5);
       color: var(--primary);
-      border-radius: 8px;
+      border-radius: 30px;
+      font-size: 1em;
+      transition: all 0.3s;
     }
+    
+    .search-bar input:focus {
+      outline: none;
+      box-shadow: 0 0 15px var(--primary);
+    }
+    
+    .search-bar::before {
+      content: "\f002";
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900;
+      position: absolute;
+      left: 35px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary);
+    }
+    
+    /* Card Improvements */
     .section {
       padding: 30px 20px;
       display: flex;
       flex-wrap: wrap;
-      gap: 20px;
+      gap: 25px;
       justify-content: center;
+      max-width: 1400px;
+      margin: 0 auto;
     }
+    
     .card {
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(15, 15, 15, 0.8);
       border: 1px solid var(--card-border);
       border-radius: 15px;
-      box-shadow: 0 0 15px var(--card-border);
-      padding: 20px;
-      max-width: 300px;
+      box-shadow: 0 5px 15px rgba(0, 255, 225, 0.1);
+      padding: 25px;
       width: 100%;
+      max-width: 320px;
       text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
+    
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        to bottom right,
+        rgba(0, 255, 225, 0.1) 0%,
+        rgba(0, 255, 225, 0) 60%
+      );
+      transform: rotate(30deg);
+      z-index: 0;
+    }
+    
     .card:hover {
-      transform: translateY(-8px) scale(1.03);
-      box-shadow: 0 0 30px var(--primary);
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 15px 30px rgba(0, 255, 225, 0.3);
+      border-color: var(--primary);
     }
+    
     .card img {
       max-width: 100px;
-      margin-bottom: 10px;
+      max-height: 100px;
+      margin-bottom: 15px;
+      border-radius: 15px;
+      object-fit: contain;
+      position: relative;
+      z-index: 1;
     }
+    
+    .card h3 {
+      color: var(--primary);
+      margin: 10px 0;
+      font-size: 1.4em;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .card small {
+      display: block;
+      margin: 5px 0;
+      color: #aaa;
+      font-size: 0.9em;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .card p {
+      margin: 15px 0;
+      color: var(--text-light);
+      font-size: 0.95em;
+      min-height: 60px;
+      position: relative;
+      z-index: 1;
+    }
+    
     .download-link {
-      padding: 10px 18px;
+      display: inline-block;
+      padding: 12px 25px;
       background: var(--primary);
       color: #000;
       text-decoration: none;
-      border-radius: 6px;
+      border-radius: 30px;
+      font-weight: bold;
+      transition: all 0.3s;
+      position: relative;
+      z-index: 1;
+      border: none;
+      cursor: pointer;
     }
+    
+    .download-link:hover {
+      background: #000;
+      color: var(--primary);
+      box-shadow: 0 0 15px var(--primary);
+    }
+    
+    /* Type Badges */
+    .type-badge {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.7em;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      z-index: 2;
+    }
+    
+    .type-mod {
+      background: rgba(255, 0, 170, 0.2);
+      color: var(--secondary);
+      border: 1px solid var(--secondary);
+    }
+    
+    .type-tool {
+      background: rgba(0, 255, 225, 0.2);
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+    
+    .type-premium {
+      background: rgba(255, 215, 0, 0.2);
+      color: gold;
+      border: 1px solid gold;
+    }
+    
+    /* Social Banner Improvements */
     .social-banner {
       text-align: center;
-      background: #111;
-      padding: 10px;
+      background: var(--bg-darker);
+      padding: 20px;
+      margin-top: 40px;
     }
+    
     .social-banner a {
       color: var(--primary);
-      margin: 0 10px;
+      margin: 0 15px;
+      font-size: 1.2em;
+      transition: all 0.3s;
+      display: inline-block;
     }
+    
+    .social-banner a:hover {
+      color: var(--secondary);
+      transform: translateY(-3px);
+    }
+    
+    /* Footer Improvements */
     footer {
       text-align: center;
-      padding: 15px;
-      background: #111;
-      color: #999;
+      padding: 25px;
+      background: var(--bg-darker);
+      color: #777;
+      font-size: 0.9em;
+    }
+    
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2em;
+      }
+      
+      .tagline {
+        font-size: 0.9em;
+      }
+      
+      nav button {
+        padding: 8px 15px;
+        font-size: 0.9em;
+      }
+      
+      .slider {
+        height: 250px;
+      }
+      
+      .card {
+        max-width: 100%;
+      }
+    }
+    
+    /* Scrollbar Styling */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: var(--bg-dark);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 5px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--secondary);
     }
   </style>
 </head>
@@ -158,48 +408,60 @@
 </div>
 
 <header>
-  <h1>☠️ ASZONE – Mod & Hacking Hub ☠️</h1>
-  <div class="tagline">Unleashing Digital Power — Free Mod APKs & Ethical Tools</div>
+  <h1><i class="fas fa-skull"></i> ASZONE – Mod & Hacking Hub <i class="fas fa-skull"></i></h1>
+  <div class="tagline">Unleashing Digital Power — Free Mod APKs & Ethical Tools for Android Enthusiasts</div>
 </header>
 
 <nav>
-  <button onclick="filterCategory('all')">All</button>
+  <button onclick="filterCategory('all')" class="active">All</button>
   <button onclick="filterCategory('mod')">Mod APK</button>
-  <button onclick="filterCategory('tool')">Tool</button>
+  <button onclick="filterCategory('tool')">Hacking Tools</button>
   <button onclick="filterCategory('premium')">Premium</button>
-  <a href="about.html"><button>About</button></a>
+  <button onclick="window.location.href='about.html'">About</button>
 </nav>
 
 <div class="search-bar">
-  <input type="text" id="searchInput" placeholder="🔍 Search Tools or Mod APKs..."/>
+  <input type="text" id="searchInput" placeholder="Search Tools or Mod APKs..."/>
 </div>
+
+<div id="loader" class="loader"></div>
 
 <div class="section" id="contentArea"></div>
 
 <div class="social-banner">
-  🔗 Follow Me On:
-  <a href="https://t.me/theaftabsk" target="_blank">Telegram</a> |
-  <a href="https://instagram.com/theaftabsk" target="_blank">Instagram</a>
+  <span><i class="fas fa-link"></i> Follow Me On:</span>
+  <a href="https://t.me/theaftabsk" target="_blank"><i class="fab fa-telegram"></i> Telegram</a>
+  <a href="https://instagram.com/theaftabsk" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+  <a href="https://github.com/theaftabsk" target="_blank"><i class="fab fa-github"></i> GitHub</a>
 </div>
 
 <footer>
-  &copy; 2025 ASZONE. Designed by Aftab SK.
+  &copy; 2025 ASZONE. Designed by <a href="https://github.com/theaftabsk" target="_blank">Aftab SK</a>. 
+  <span style="display: block; margin-top: 10px; font-size: 0.8em;">
+    Disclaimer: This site is for educational purposes only. Use all tools at your own risk.
+  </span>
 </footer>
 
 <script>
-let currentSlide = 0, bannerData = [];
+let currentSlide = 0, bannerData = [], allTools = [];
+
+// Show loading indicator
+function showLoader(show) {
+  document.getElementById('loader').style.display = show ? 'block' : 'none';
+}
 
 async function loadBannerSlider() {
   try {
+    showLoader(true);
     const res = await fetch("https://raw.githubusercontent.com/theaftabsk/Aftabtool/main/banners.json");
     bannerData = await res.json();
     const bannerSlider = document.getElementById("bannerSlider");
     const dotsContainer = document.getElementById("dotsContainer");
 
-    bannerSlider.innerHTML = bannerData.map(url =>
+    bannerSlider.innerHTML = bannerData.map((url, index) =>
       url.endsWith(".mp4")
         ? `<video src="${url}" autoplay loop muted playsinline></video>`
-        : `<img src="${url}" alt="Banner">`
+        : `<img src="${url}" alt="Banner ${index + 1}" loading="lazy">`
     ).join("");
 
     dotsContainer.innerHTML = bannerData.map((_, i) =>
@@ -208,7 +470,13 @@ async function loadBannerSlider() {
 
     setInterval(nextSlide, 5000);
   } catch (e) {
-    document.getElementById("bannerSlider").innerHTML = "<p style='color:red'>⚠️ Failed to load banners</p>";
+    console.error("Failed to load banners:", e);
+    document.getElementById("bannerSlider").innerHTML = `
+      <div style="color:red; text-align:center; padding: 50px;">
+        <i class="fas fa-exclamation-triangle"></i> Failed to load banners. Please check your connection.
+      </div>`;
+  } finally {
+    showLoader(false);
   }
 }
 
@@ -225,48 +493,126 @@ function goToSlide(index) {
 function updateSlide() {
   const slider = document.getElementById("bannerSlider");
   const dots = document.querySelectorAll(".dot");
-  slider.style.transform = `translateX(-${currentSlide * 100}%)`;
-  dots.forEach((d, i) => d.classList.toggle("active", i === currentSlide));
+  if (slider && dots) {
+    slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+    dots.forEach((d, i) => d.classList.toggle("active", i === currentSlide));
+  }
 }
 
 async function loadTools() {
   try {
+    showLoader(true);
     const res = await fetch("https://raw.githubusercontent.com/theaftabsk/Aftabtool/main/tools.json");
-    const tools = await res.json();
-    const container = document.getElementById("contentArea");
-    container.innerHTML = "";
-    tools.reverse().forEach(tool => {
-      container.innerHTML += `
-        <div class="card" data-type="${tool.type}">
-          <img src="${tool.logo}" alt="${tool.name} logo" />
-          <h3>${tool.name}</h3>
-          <small>Upload Date: ${tool.date}</small>
-          <small>Rating: ⭐ ${tool.rating}</small>
-          <p>${tool.desc}</p>
-          <a href="${tool.link}" class="download-link" target="_blank">⬇️ Download</a>
-        </div>`;
-    });
+    allTools = await res.json();
+    renderTools(allTools);
   } catch (err) {
-    document.getElementById("contentArea").innerHTML = "<p style='color:red;'>⚠️ Failed to load tools.json</p>";
+    console.error("Failed to load tools:", err);
+    document.getElementById("contentArea").innerHTML = `
+      <div style="color:red; text-align:center; padding: 50px; width: 100%;">
+        <i class="fas fa-exclamation-circle"></i> Failed to load tools. Please try again later.
+      </div>`;
+  } finally {
+    showLoader(false);
   }
 }
 
-function filterCategory(type) {
-  document.querySelectorAll(".card").forEach(card => {
-    card.style.display = (type === "all" || card.dataset.type === type) ? "block" : "none";
+function renderTools(tools) {
+  const container = document.getElementById("contentArea");
+  if (!container) return;
+  
+  container.innerHTML = "";
+  
+  if (!tools || tools.length === 0) {
+    container.innerHTML = `
+      <div style="text-align:center; padding: 50px; width: 100%; color: var(--primary)">
+        <i class="fas fa-box-open" style="font-size: 3em;"></i>
+        <h3>No tools found</h3>
+        <p>Try a different search or check back later</p>
+      </div>`;
+    return;
+  }
+  
+  // Reverse to show newest first
+  tools.reverse().forEach(tool => {
+    const typeClass = `type-${tool.type}`;
+    const typeName = tool.type === 'mod' ? 'MOD' : 
+                     tool.type === 'tool' ? 'TOOL' : 
+                     tool.type === 'premium' ? 'PREMIUM' : '';
+    
+    container.innerHTML += `
+      <div class="card" data-type="${tool.type}">
+        <span class="type-badge ${typeClass}">${typeName}</span>
+        <img src="${tool.logo}" alt="${tool.name} logo" loading="lazy" />
+        <h3>${tool.name}</h3>
+        <small><i class="far fa-calendar-alt"></i> ${tool.date}</small>
+        <small><i class="fas fa-star"></i> ${tool.rating}/5</small>
+        <p>${tool.desc}</p>
+        <a href="${tool.link}" class="download-link" target="_blank" rel="noopener">
+          <i class="fas fa-download"></i> Download
+        </a>
+      </div>`;
   });
 }
 
-document.getElementById("searchInput").addEventListener("input", function () {
-  const value = this.value.toLowerCase();
-  document.querySelectorAll(".card").forEach(card => {
-    card.style.display = card.textContent.toLowerCase().includes(value) ? "block" : "none";
+function filterCategory(type) {
+  // Update active button
+  document.querySelectorAll('nav button').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.toLowerCase().includes(type) || 
+                              (type === 'all' && btn.textContent === 'All'));
   });
+  
+  if (type === 'all') {
+    renderTools(allTools);
+    return;
+  }
+  
+  const filteredTools = allTools.filter(tool => tool.type === type);
+  renderTools(filteredTools);
+  
+  // Reset search input
+  document.getElementById("searchInput").value = "";
+}
+
+// Debounce search input
+let searchTimeout;
+document.getElementById("searchInput").addEventListener("input", function() {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    const value = this.value.toLowerCase();
+    if (!value) {
+      renderTools(allTools);
+      return;
+    }
+    
+    const filteredTools = allTools.filter(tool => 
+      tool.name.toLowerCase().includes(value) || 
+      tool.desc.toLowerCase().includes(value)
+    );
+    renderTools(filteredTools);
+  }, 300);
+});
+
+// Initialize with hash if present
+window.addEventListener('DOMContentLoaded', () => {
+  const hash = window.location.hash.substring(1);
+  if (hash && ['all', 'mod', 'tool', 'premium'].includes(hash)) {
+    filterCategory(hash);
+  } else {
+    filterCategory('all');
+  }
 });
 
 window.onload = () => {
   loadBannerSlider();
   loadTools();
+  
+  // Add hash change listener
+  window.addEventListener('hashchange', () => {
+    const hash = window.location.hash.substring(1);
+    if (hash && ['all', 'mod', 'tool', 'premium'].includes(hash)) {
+      filterCategory(hash);
+    }
+  });
 };
 </script>
 
