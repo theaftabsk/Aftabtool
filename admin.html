@@ -4,69 +4,351 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ASZONE Admin Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    :root {
+      --primary: #00ffe1;
+      --secondary: #ff00aa;
+      --danger: #ff3d3d;
+      --bg-dark: #0f0f0f;
+      --bg-darker: #080808;
+      --card-bg: #111;
+      --text-light: #e0e0e0;
+      --border-color: #333;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
     body {
-      font-family: sans-serif;
-      background: #0f0f0f;
-      color: #00ffe1;
+      font-family: 'Roboto', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-light);
+      line-height: 1.6;
       padding: 20px;
+      min-height: 100vh;
     }
-    input, textarea, select, button {
-      width: 100%; padding: 8px; margin: 5px 0;
-      background: #000; border: 1px solid #00ffe1;
-      color: #00ffe1; border-radius: 5px;
+    
+    h1, h2, h3, button {
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 1px;
     }
-    button {
-      background: #00ffe1; color: #000; font-weight: bold;
+    
+    #loginForm, #adminPanel {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--bg-darker);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 255, 225, 0.1);
+      border: 1px solid var(--border-color);
     }
-    .tool-item, .banner-item {
-      border: 1px solid #444; padding: 10px;
-      background: #111; margin: 10px 0;
+    
+    #loginForm {
+      margin-top: 50px;
+    }
+    
+    #loginForm h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: var(--primary);
+    }
+    
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border-color);
+      color: var(--text-light);
       border-radius: 5px;
+      font-size: 16px;
+      transition: all 0.3s;
     }
-    #adminPanel { display: none; }
+    
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 10px rgba(0, 255, 225, 0.3);
+    }
+    
+    button {
+      padding: 12px 20px;
+      background: var(--primary);
+      color: #000;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    button:hover {
+      background: #000;
+      color: var(--primary);
+      box-shadow: 0 0 15px var(--primary);
+    }
+    
+    button.danger {
+      background: var(--danger);
+      color: white;
+    }
+    
+    button.danger:hover {
+      background: #000;
+      color: var(--danger);
+      box-shadow: 0 0 15px var(--danger);
+    }
+    
+    .tool-item, .banner-item {
+      border: 1px solid var(--border-color);
+      padding: 15px;
+      background: var(--card-bg);
+      margin: 15px 0;
+      border-radius: 8px;
+      transition: all 0.3s;
+    }
+    
+    .tool-item:hover, .banner-item:hover {
+      border-color: var(--primary);
+      box-shadow: 0 0 15px rgba(0, 255, 225, 0.2);
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--primary);
+      font-weight: 500;
+    }
+    
+    .stats {
+      display: flex;
+      gap: 20px;
+      margin: 20px 0;
+    }
+    
+    .stat-card {
+      background: var(--card-bg);
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      flex: 1;
+      text-align: center;
+    }
+    
+    .stat-card h3 {
+      color: var(--primary);
+      margin-bottom: 5px;
+    }
+    
+    #adminPanel { 
+      display: none; 
+    }
+    
+    .section {
+      margin: 30px 0;
+      padding: 20px 0;
+      border-top: 1px solid var(--border-color);
+    }
+    
+    .section h2 {
+      color: var(--primary);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .banner-preview {
+      max-width: 100%;
+      height: auto;
+      max-height: 100px;
+      margin-top: 10px;
+      border-radius: 5px;
+      border: 1px solid var(--border-color);
+    }
+    
+    .tool-preview {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+      border-radius: 8px;
+      margin-right: 10px;
+      border: 1px solid var(--border-color);
+    }
+    
+    .tool-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .alert {
+      padding: 15px;
+      border-radius: 5px;
+      margin: 15px 0;
+      display: none;
+    }
+    
+    .alert.success {
+      background: rgba(0, 255, 0, 0.1);
+      border: 1px solid #00ff00;
+      color: #00ff00;
+    }
+    
+    .alert.error {
+      background: rgba(255, 0, 0, 0.1);
+      border: 1px solid var(--danger);
+      color: var(--danger);
+    }
+    
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+      
+      #loginForm, #adminPanel {
+        padding: 20px;
+      }
+      
+      .stats {
+        flex-direction: column;
+      }
+    }
   </style>
 </head>
 <body>
 
 <div id="loginForm">
-  <h2>🔐 Admin Login</h2>
-  <input type="text" id="username" placeholder="Username">
-  <input type="password" id="password" placeholder="Password">
-  <input type="password" id="token" placeholder="GitHub Token">
-  <button onclick="login()">Login</button>
+  <h2><i class="fas fa-lock"></i> Admin Login</h2>
+  <div class="alert error" id="loginError"></div>
+  
+  <div class="form-group">
+    <label for="username"><i class="fas fa-user"></i> Username</label>
+    <input type="text" id="username" placeholder="Enter username" autocomplete="off">
+  </div>
+  
+  <div class="form-group">
+    <label for="password"><i class="fas fa-key"></i> Password</label>
+    <input type="password" id="password" placeholder="Enter password" autocomplete="off">
+  </div>
+  
+  <div class="form-group">
+    <label for="token"><i class="fab fa-github"></i> GitHub Token</label>
+    <input type="password" id="token" placeholder="Enter GitHub personal access token" autocomplete="off">
+    <small style="color: #777; display: block; margin-top: 5px;">
+      Required to update repository files. Create one with repo permissions.
+    </small>
+  </div>
+  
+  <button onclick="login()"><i class="fas fa-sign-in-alt"></i> Login</button>
 </div>
 
 <div id="adminPanel">
-  <h1>ASZONE Admin Panel</h1>
-  <h3>Total Tools: <span id="toolCount">0</span></h3>
-
-  <form id="toolForm">
-    <h3>Add New Tool</h3>
-    <input type="text" id="name" placeholder="Tool Name" required>
-    <textarea id="desc" placeholder="Description" required></textarea>
-    <select id="type">
-      <option value="mod">Mod APK</option>
-      <option value="tool">Tool</option>
-      <option value="premium">Premium</option>
-    </select>
-    <input type="url" id="link" placeholder="Download Link" required>
-    <input type="url" id="logo" placeholder="Logo URL">
-    <input type="number" id="rating" placeholder="Rating" step="0.1">
-    <input type="date" id="date">
-    <button type="submit">➕ Add Tool</button>
-  </form>
-
-  <h3>🛠️ Manage Tools</h3>
-  <div id="toolList"></div>
-
-  <h3>🖼️ Manage Banners</h3>
-  <input type="url" id="newBanner" placeholder="New Banner URL">
-  <button onclick="addBanner()">➕ Add Banner</button>
-  <div id="bannerList"></div>
+  <div class="alert success" id="successAlert"></div>
+  <div class="alert error" id="errorAlert"></div>
+  
+  <h1><i class="fas fa-user-shield"></i> ASZONE Admin Panel</h1>
+  
+  <div class="stats">
+    <div class="stat-card">
+      <h3><i class="fas fa-tools"></i> Total Tools</h3>
+      <p id="toolCount">0</p>
+    </div>
+    <div class="stat-card">
+      <h3><i class="fas fa-image"></i> Total Banners</h3>
+      <p id="bannerCount">0</p>
+    </div>
+    <div class="stat-card">
+      <h3><i class="fas fa-user"></i> Logged In As</h3>
+      <p id="loggedInUser">-</p>
+    </div>
+  </div>
+  
+  <div class="section">
+    <h2><i class="fas fa-plus-circle"></i> Add New Tool</h2>
+    <form id="toolForm">
+      <div class="form-group">
+        <label for="name">Tool Name</label>
+        <input type="text" id="name" placeholder="Enter tool name" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="desc">Description</label>
+        <textarea id="desc" placeholder="Enter description" rows="3" required></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label for="type">Type</label>
+        <select id="type" required>
+          <option value="mod">Mod APK</option>
+          <option value="tool">Hacking Tool</option>
+          <option value="premium">Premium</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="link">Download Link</label>
+        <input type="url" id="link" placeholder="Enter download URL" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="logo">Logo URL</label>
+        <input type="url" id="logo" placeholder="Enter logo image URL">
+      </div>
+      
+      <div style="display: flex; gap: 15px;">
+        <div class="form-group" style="flex: 1;">
+          <label for="rating">Rating (1-5)</label>
+          <input type="number" id="rating" placeholder="Enter rating" min="1" max="5" step="0.1" value="4.0">
+        </div>
+        
+        <div class="form-group" style="flex: 1;">
+          <label for="date">Date</label>
+          <input type="date" id="date">
+        </div>
+      </div>
+      
+      <button type="submit"><i class="fas fa-plus"></i> Add Tool</button>
+    </form>
+  </div>
+  
+  <div class="section">
+    <h2><i class="fas fa-tools"></i> Manage Tools</h2>
+    <div id="toolList"></div>
+  </div>
+  
+  <div class="section">
+    <h2><i class="fas fa-images"></i> Manage Banners</h2>
+    
+    <div class="form-group">
+      <label for="newBanner">New Banner URL</label>
+      <input type="url" id="newBanner" placeholder="Enter banner image or video URL">
+      <small style="color: #777; display: block; margin-top: 5px;">
+        Supports .jpg, .png, .gif, or .mp4 files
+      </small>
+    </div>
+    
+    <button onclick="addBanner()"><i class="fas fa-plus"></i> Add Banner</button>
+    <div id="bannerList"></div>
+  </div>
 </div>
 
 <script>
+// Configuration - Change these values for production!
 const USERNAME = "Aftab";
 const PASSWORD = "hacker05";
 const GITHUB_USER = "theaftabsk";
@@ -74,147 +356,413 @@ const REPO = "Aftabtool";
 const BRANCH = "main";
 const TOOLS_FILE = "tools.json";
 const BANNERS_FILE = "banners.json";
-let TOKEN = "", tools = [], banners = [];
 
-function login() {
-  const u = document.getElementById("username").value;
-  const p = document.getElementById("password").value;
-  TOKEN = document.getElementById("token").value.trim();
+// State
+let TOKEN = "";
+let tools = [];
+let banners = [];
+let isSaving = false;
 
-  if (u === USERNAME && p === PASSWORD && TOKEN !== "") {
-    document.getElementById("loginForm").style.display = "none";
-    document.getElementById("adminPanel").style.display = "block";
-    loadData();
-  } else {
-    alert("❌ Incorrect login or missing token.");
+// DOM Elements
+const loginErrorEl = document.getElementById("loginError");
+const successAlertEl = document.getElementById("successAlert");
+const errorAlertEl = document.getElementById("errorAlert");
+
+// Helper functions
+function showAlert(element, message, duration = 3000) {
+  element.textContent = message;
+  element.style.display = "block";
+  setTimeout(() => {
+    element.style.display = "none";
+  }, duration);
+}
+
+function validateURL(url) {
+  try {
+    new URL(url);
+    return true;
+  } catch {
+    return false;
   }
 }
 
+function formatDate(dateString) {
+  if (!dateString) return "Not set";
+  const date = new Date(dateString);
+  return date.toLocaleDateString();
+}
+
+// Login function
+async function login() {
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+  TOKEN = document.getElementById("token").value.trim();
+
+  // Basic validation
+  if (!username || !password || !TOKEN) {
+    showAlert(loginErrorEl, "❌ Please fill all fields", 4000);
+    return;
+  }
+
+  if (username !== USERNAME || password !== PASSWORD) {
+    showAlert(loginErrorEl, "❌ Invalid username or password", 4000);
+    return;
+  }
+
+  // Verify GitHub token
+  try {
+    const response = await fetch(`https://api.github.com/user`, {
+      headers: {
+        Authorization: `token ${TOKEN}`
+      }
+    });
+
+    if (!response.ok) {
+      showAlert(loginErrorEl, "❌ Invalid GitHub token", 4000);
+      return;
+    }
+
+    // Login successful
+    document.getElementById("loginForm").style.display = "none";
+    document.getElementById("adminPanel").style.display = "block";
+    document.getElementById("loggedInUser").textContent = username;
+    
+    // Load data
+    await loadData();
+    showAlert(successAlertEl, "✅ Login successful", 2000);
+  } catch (error) {
+    showAlert(loginErrorEl, "❌ Error verifying GitHub token", 4000);
+    console.error("Login error:", error);
+  }
+}
+
+// Data loading
 async function loadData() {
-  tools = await fetchJSON(TOOLS_FILE);
-  banners = await fetchJSON(BANNERS_FILE);
-  showTools();
-  showBanners();
+  try {
+    tools = await fetchJSON(TOOLS_FILE);
+    banners = await fetchJSON(BANNERS_FILE);
+    updateStats();
+    showTools();
+    showBanners();
+  } catch (error) {
+    showAlert(errorAlertEl, "❌ Failed to load data. Check console for details.");
+    console.error("Load data error:", error);
+  }
 }
 
 async function fetchJSON(file) {
-  const res = await fetch(`https://raw.githubusercontent.com/${GITHUB_USER}/${REPO}/${BRANCH}/${file}`);
-  return await res.json();
+  try {
+    const res = await fetch(`https://raw.githubusercontent.com/${GITHUB_USER}/${REPO}/${BRANCH}/${file}?t=${Date.now()}`);
+    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+    return await res.json();
+  } catch (error) {
+    console.error(`Error fetching ${file}:`, error);
+    showAlert(errorAlertEl, `❌ Failed to load ${file}`);
+    return [];
+  }
 }
 
-function showTools() {
+function updateStats() {
   document.getElementById("toolCount").textContent = tools.length;
+  document.getElementById("bannerCount").textContent = banners.length;
+}
+
+// Tools management
+function showTools() {
   const container = document.getElementById("toolList");
   container.innerHTML = "";
+  
+  if (tools.length === 0) {
+    container.innerHTML = `<p style="text-align: center; color: #777;">No tools found</p>`;
+    return;
+  }
+  
   tools.forEach((tool, i) => {
     container.innerHTML += `
       <div class="tool-item">
-        <input value="${tool.name}" onchange="editTool(${i}, 'name', this.value)">
-        <textarea onchange="editTool(${i}, 'desc', this.value)">${tool.desc}</textarea>
-        <input value="${tool.type}" onchange="editTool(${i}, 'type', this.value)">
-        <input value="${tool.link}" onchange="editTool(${i}, 'link', this.value)">
-        <input value="${tool.logo}" onchange="editTool(${i}, 'logo', this.value)">
-        <input value="${tool.rating}" onchange="editTool(${i}, 'rating', this.value)">
-        <input value="${tool.date}" onchange="editTool(${i}, 'date', this.value)">
-        <button onclick="deleteTool(${i})">❌ Delete</button>
+        <div class="tool-header">
+          ${tool.logo ? `<img src="${tool.logo}" class="tool-preview" alt="${tool.name} logo">` : ''}
+          <h3>${tool.name}</h3>
+        </div>
+        
+        <div class="form-group">
+          <label>Name</label>
+          <input value="${tool.name}" onchange="editTool(${i}, 'name', this.value)">
+        </div>
+        
+        <div class="form-group">
+          <label>Description</label>
+          <textarea onchange="editTool(${i}, 'desc', this.value)">${tool.desc}</textarea>
+        </div>
+        
+        <div class="form-group">
+          <label>Type</label>
+          <select onchange="editTool(${i}, 'type', this.value)">
+            <option value="mod" ${tool.type === 'mod' ? 'selected' : ''}>Mod APK</option>
+            <option value="tool" ${tool.type === 'tool' ? 'selected' : ''}>Hacking Tool</option>
+            <option value="premium" ${tool.type === 'premium' ? 'selected' : ''}>Premium</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label>Download Link</label>
+          <input type="url" value="${tool.link}" onchange="editTool(${i}, 'link', this.value)">
+        </div>
+        
+        <div class="form-group">
+          <label>Logo URL</label>
+          <input type="url" value="${tool.logo || ''}" onchange="editTool(${i}, 'logo', this.value)">
+        </div>
+        
+        <div style="display: flex; gap: 15px;">
+          <div class="form-group" style="flex: 1;">
+            <label>Rating</label>
+            <input type="number" value="${tool.rating}" step="0.1" min="1" max="5" 
+                   onchange="editTool(${i}, 'rating', this.value)">
+          </div>
+          
+          <div class="form-group" style="flex: 1;">
+            <label>Date</label>
+            <input type="date" value="${tool.date}" onchange="editTool(${i}, 'date', this.value)">
+          </div>
+        </div>
+        
+        <button class="danger" onclick="deleteTool(${i})">
+          <i class="fas fa-trash"></i> Delete
+        </button>
       </div>`;
   });
 }
 
 function editTool(i, key, value) {
   tools[i][key] = value;
-  saveFile(TOOLS_FILE, tools);
+  saveFile(TOOLS_FILE, tools, `Updated ${key} for ${tools[i].name}`);
 }
 
-function deleteTool(i) {
-  if (confirm("Delete this tool?")) {
-    tools.splice(i, 1);
-    showTools();
-    saveFile(TOOLS_FILE, tools);
+async function deleteTool(i) {
+  if (!confirm(`Are you sure you want to delete "${tools[i].name}"?`)) return;
+  
+  const toolName = tools[i].name;
+  tools.splice(i, 1);
+  showTools();
+  updateStats();
+  
+  try {
+    await saveFile(TOOLS_FILE, tools, `Deleted ${toolName}`);
+    showAlert(successAlertEl, `✅ Deleted ${toolName}`);
+  } catch (error) {
+    showAlert(errorAlertEl, `❌ Failed to delete ${toolName}`);
   }
 }
 
-document.getElementById("toolForm").addEventListener("submit", e => {
-  e.preventDefault();
-  tools.unshift({
-    name: name.value,
-    desc: desc.value,
-    type: type.value,
-    link: link.value,
-    logo: logo.value,
-    rating: rating.value || "4.0",
-    date: date.value || new Date().toISOString().split("T")[0]
-  });
-  showTools();
-  saveFile(TOOLS_FILE, tools);
-  e.target.reset();
-});
-
+// Banners management
 function showBanners() {
   const list = document.getElementById("bannerList");
   list.innerHTML = "";
+  
+  if (banners.length === 0) {
+    list.innerHTML = `<p style="text-align: center; color: #777;">No banners found</p>`;
+    return;
+  }
+  
   banners.forEach((url, i) => {
+    const isVideo = url.endsWith('.mp4');
     list.innerHTML += `
       <div class="banner-item">
-        <strong>Banner ${i + 1}</strong>
-        <input value="${url}" onchange="editBanner(${i}, this.value)">
-        <button onclick="deleteBanner(${i})">❌ Delete</button>
+        <h3>Banner ${i + 1}</h3>
+        
+        <div class="form-group">
+          <label>URL</label>
+          <input type="url" value="${url}" onchange="editBanner(${i}, this.value)">
+        </div>
+        
+        ${isVideo ? `
+          <video src="${url}" class="banner-preview" controls muted></video>
+        ` : `
+          <img src="${url}" class="banner-preview" alt="Banner ${i + 1}">
+        `}
+        
+        <button class="danger" onclick="deleteBanner(${i})">
+          <i class="fas fa-trash"></i> Delete
+        </button>
       </div>`;
   });
 }
 
-function addBanner() {
-  const url = document.getElementById("newBanner").value.trim();
-  if (url) {
-    banners.push(url);
-    showBanners();
-    saveFile(BANNERS_FILE, banners);
-    document.getElementById("newBanner").value = "";
+async function addBanner() {
+  const urlInput = document.getElementById("newBanner");
+  const url = urlInput.value.trim();
+  
+  if (!url) {
+    showAlert(errorAlertEl, "❌ Please enter a URL");
+    return;
+  }
+  
+  if (!validateURL(url)) {
+    showAlert(errorAlertEl, "❌ Invalid URL format");
+    return;
+  }
+  
+  banners.push(url);
+  urlInput.value = "";
+  showBanners();
+  updateStats();
+  
+  try {
+    await saveFile(BANNERS_FILE, banners, "Added new banner");
+    showAlert(successAlertEl, "✅ Banner added successfully");
+  } catch (error) {
+    showAlert(errorAlertEl, "❌ Failed to add banner");
   }
 }
 
 function editBanner(i, value) {
+  if (!validateURL(value)) {
+    showAlert(errorAlertEl, "❌ Invalid URL format");
+    return;
+  }
+  
   banners[i] = value;
-  saveFile(BANNERS_FILE, banners);
+  saveFile(BANNERS_FILE, banners, `Updated banner ${i + 1}`);
 }
 
-function deleteBanner(i) {
-  if (confirm("Delete banner?")) {
-    banners.splice(i, 1);
-    showBanners();
-    saveFile(BANNERS_FILE, banners);
+async function deleteBanner(i) {
+  if (!confirm("Delete this banner?")) return;
+  
+  banners.splice(i, 1);
+  showBanners();
+  updateStats();
+  
+  try {
+    await saveFile(BANNERS_FILE, banners, `Deleted banner ${i + 1}`);
+    showAlert(successAlertEl, "✅ Banner deleted");
+  } catch (error) {
+    showAlert(errorAlertEl, "❌ Failed to delete banner");
   }
 }
 
-async function saveFile(path, data) {
-  const api = `https://api.github.com/repos/${GITHUB_USER}/${REPO}/contents/${path}`;
-  const res = await fetch(api, {
-    headers: { Authorization: `token ${TOKEN}` }
-  });
-  const file = await res.json();
-  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-  const body = {
-    message: `Update ${path}`,
-    content: content,
-    sha: file.sha,
-    branch: BRANCH
+// GitHub file saving
+async function saveFile(path, data, commitMessage) {
+  if (isSaving) {
+    showAlert(errorAlertEl, "❌ Already saving, please wait");
+    return;
+  }
+  
+  isSaving = true;
+  const loadingBtn = document.activeElement;
+  const originalText = loadingBtn?.innerHTML;
+  
+  if (loadingBtn) {
+    loadingBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Saving...`;
+    loadingBtn.disabled = true;
+  }
+  
+  try {
+    // Get current file SHA
+    const apiUrl = `https://api.github.com/repos/${GITHUB_USER}/${REPO}/contents/${path}`;
+    const getRes = await fetch(apiUrl, {
+      headers: { Authorization: `token ${TOKEN}` }
+    });
+    
+    if (!getRes.ok) throw new Error(`Failed to get file: ${getRes.status}`);
+    
+    const fileInfo = await getRes.json();
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+    
+    // Update file
+    const putRes = await fetch(apiUrl, {
+      method: "PUT",
+      headers: {
+        Authorization: `token ${TOKEN}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: commitMessage || `Update ${path}`,
+        content: content,
+        sha: fileInfo.sha,
+        branch: BRANCH
+      })
+    });
+    
+    if (!putRes.ok) {
+      const error = await putRes.json();
+      throw new Error(error.message || "Failed to update file");
+    }
+    
+    showAlert(successAlertEl, `✅ ${commitMessage || 'Changes saved'} successfully`);
+    console.log(`Saved ${path} successfully`);
+  } catch (error) {
+    console.error("Save error:", error);
+    showAlert(errorAlertEl, `❌ Error saving: ${error.message}`);
+    throw error;
+  } finally {
+    isSaving = false;
+    if (loadingBtn) {
+      loadingBtn.innerHTML = originalText;
+      loadingBtn.disabled = false;
+    }
+  }
+}
+
+// Form submission
+document.getElementById("toolForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  
+  const name = document.getElementById("name").value.trim();
+  const desc = document.getElementById("desc").value.trim();
+  const type = document.getElementById("type").value;
+  const link = document.getElementById("link").value.trim();
+  const logo = document.getElementById("logo").value.trim();
+  const rating = document.getElementById("rating").value || "4.0";
+  const date = document.getElementById("date").value || new Date().toISOString().split("T")[0];
+  
+  // Validation
+  if (!name || !desc || !link) {
+    showAlert(errorAlertEl, "❌ Please fill required fields");
+    return;
+  }
+  
+  if (!validateURL(link)) {
+    showAlert(errorAlertEl, "❌ Invalid download URL");
+    return;
+  }
+  
+  if (logo && !validateURL(logo)) {
+    showAlert(errorAlertEl, "❌ Invalid logo URL");
+    return;
+  }
+  
+  // Add new tool
+  const newTool = {
+    name,
+    desc,
+    type,
+    link,
+    logo: logo || "https://via.placeholder.com/100?text=ASZONE",
+    rating,
+    date
   };
-
-  const saveRes = await fetch(api, {
-    method: "PUT",
-    headers: {
-      Authorization: `token ${TOKEN}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(body)
-  });
-
-  if (saveRes.ok) {
-    console.log(`✅ ${path} updated`);
-  } else {
-    alert(`❌ Failed to update ${path}`);
+  
+  tools.unshift(newTool);
+  e.target.reset();
+  showTools();
+  updateStats();
+  
+  try {
+    await saveFile(TOOLS_FILE, tools, `Added new tool: ${name}`);
+    showAlert(successAlertEl, `✅ Added ${name} successfully`);
+  } catch (error) {
+    showAlert(errorAlertEl, `❌ Failed to add ${name}`);
   }
-}
+});
+
+// Set today's date as default
+document.getElementById("date").value = new Date().toISOString().split("T")[0];
+
+// Handle Enter key in login form
+document.getElementById("loginForm").addEventListener("keypress", (e) => {
+  if (e.key === "Enter") login();
+});
 </script>
 </body>
 </html>
